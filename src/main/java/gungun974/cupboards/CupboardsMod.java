@@ -10,9 +10,13 @@ import turniplabs.halplibe.util.RecipeEntrypoint;
 public class CupboardsMod implements ModInitializer, RecipeEntrypoint, GameStartEntrypoint {
     public static final String MOD_ID = "cupboards";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	public static int startBlockID = 1900;
+
     @Override
     public void onInitialize() {
         LOGGER.info("Cupboards initialized.");
+		CupboardsBlocks.RegisterBlocks();
     }
 
 	@Override

@@ -21,6 +21,9 @@
     "main": [
 			"gungun974.cupboards.CupboardsMod"
     ],
+		"initModels": [
+			"gungun974.cupboards.CupboardsModels"
+		],
 		"beforeGameStart": [
 			"gungun974.cupboards.CupboardsMod"
 		],
