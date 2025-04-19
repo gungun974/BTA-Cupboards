@@ -41,6 +41,10 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 	public boolean render(Tessellator tessellator, int x, int y, int z) {
 		int meta = renderBlocks.blockAccess.getBlockMetadata(x, y, z);
 		Direction dir = BlockLogicCupboard.getDirectionFromMeta(meta);
+		renderBlocks.uvRotateEast = 2;
+		renderBlocks.uvRotateWest = 1;
+		renderBlocks.uvRotateSouth = 2;
+		renderBlocks.uvRotateNorth = 1;
 		switch (dir) {
 			case NORTH:
 				renderBlocks.uvRotateTop = 3;
@@ -59,15 +63,22 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 
 	public IconCoordinate getBlockTexture(WorldSource blockAccess, int x, int y, int z, Side side) {
 		int meta = blockAccess.getBlockMetadata(x, y, z);
-		Side facing = BlockLogicCupboard.getDirectionFromMeta(meta).getSide();
 		BlockLogicCupboard.Type type = BlockLogicCupboard.getTypeFromMeta(meta);
 		if (side == Side.TOP) {
 			return this.chestTop;
 		} else if (side == Side.BOTTOM) {
 			return this.chestTop;
-		} else if (type == BlockLogicCupboard.Type.SINGLE && side == facing) {
+		} else if (type == BlockLogicCupboard.Type.SINGLE) {
 			return this.chestTop;
 		} else {
+			if (type == BlockLogicCupboard.Type.UP) {
+				return this.chestTopLeft;
+			}
+
+			if (type == BlockLogicCupboard.Type.DOWN) {
+				return this.chestTopRight;
+			}
+
 			return this.chestTop;
 		}
 	}
