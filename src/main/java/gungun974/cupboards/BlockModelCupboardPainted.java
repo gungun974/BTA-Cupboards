@@ -37,7 +37,7 @@ public class BlockModelCupboardPainted<T extends BlockLogic> extends BlockModelC
 			if (type == BlockLogicCupboard.Type.SINGLE && side == facing) {
 				return texCoords[color][0];
 			} else {
-				if (type == BlockLogicCupboard.Type.LEFT) {
+				if (type == BlockLogicCupboard.Type.UP) {
 					if (side == facing) {
 						return texCoords[color][1];
 					}
@@ -47,7 +47,7 @@ public class BlockModelCupboardPainted<T extends BlockLogic> extends BlockModelC
 					}
 				}
 
-				if (type == BlockLogicCupboard.Type.RIGHT) {
+				if (type == BlockLogicCupboard.Type.DOWN) {
 					if (side == facing) {
 						return texCoords[color][2];
 					}
@@ -59,10 +59,10 @@ public class BlockModelCupboardPainted<T extends BlockLogic> extends BlockModelC
 
 				return side.getAxis() != Axis.Y ? texCoords[color][5] : texCoords[color][6];
 			}
-		} else if (type == BlockLogicCupboard.Type.LEFT) {
+		} else if (type == BlockLogicCupboard.Type.UP) {
 			return texCoords[color][7];
 		} else {
-			return type == BlockLogicCupboard.Type.RIGHT ? texCoords[color][8] : texCoords[color][6];
+			return type == BlockLogicCupboard.Type.DOWN ? texCoords[color][8] : texCoords[color][6];
 		}
 	}
 

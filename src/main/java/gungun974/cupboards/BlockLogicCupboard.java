@@ -51,109 +51,27 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 
 			if (isSingleChest(world, placedOnX, y, placedOnZ)) {
 				Direction direction2 = getDirectionFromMeta(world.getBlockMetadata(placedOnX, y, placedOnZ));
-				if (direction2 == Direction.NORTH) {
-					if (placeSide == Side.EAST) {
-						setType(world, placedOnX, y, placedOnZ, Type.RIGHT);
-						type = Type.LEFT;
-						direction = direction2;
-					}
-
-					if (placeSide == Side.WEST) {
-						setType(world, placedOnX, y, placedOnZ, Type.LEFT);
-						type = Type.RIGHT;
-						direction = direction2;
-					}
+				if (placeSide == Side.TOP) {
+					setType(world, placedOnX, y, placedOnZ, Type.UP);
+					type = Type.DOWN;
+					direction = direction2;
 				}
 
-				if (direction2 == Direction.EAST) {
-					if (placeSide == Side.SOUTH) {
-						setType(world, placedOnX, y, placedOnZ, Type.RIGHT);
-						type = Type.LEFT;
-						direction = direction2;
-					}
-
-					if (placeSide == Side.NORTH) {
-						setType(world, placedOnX, y, placedOnZ, Type.LEFT);
-						type = Type.RIGHT;
-						direction = direction2;
-					}
-				}
-
-				if (direction2 == Direction.SOUTH) {
-					if (placeSide == Side.EAST) {
-						setType(world, placedOnX, y, placedOnZ, Type.LEFT);
-						type = Type.RIGHT;
-						direction = direction2;
-					}
-
-					if (placeSide == Side.WEST) {
-						setType(world, placedOnX, y, placedOnZ, Type.RIGHT);
-						type = Type.LEFT;
-						direction = direction2;
-					}
-				}
-
-				if (direction2 == Direction.WEST) {
-					if (placeSide == Side.SOUTH) {
-						setType(world, placedOnX, y, placedOnZ, Type.LEFT);
-						type = Type.RIGHT;
-						direction = direction2;
-					}
-
-					if (placeSide == Side.NORTH) {
-						setType(world, placedOnX, y, placedOnZ, Type.RIGHT);
-						type = Type.LEFT;
-						direction = direction2;
-					}
+				if (placeSide == Side.BOTTOM) {
+					setType(world, placedOnX, y, placedOnZ, Type.DOWN);
+					type = Type.UP;
+					direction = direction2;
 				}
 			}
 		} else if (!mob.isSneaking()) {
-			if (direction == Direction.NORTH) {
-				if (isSingleChestWithDirection(world, x - 1, y, z, direction) && !isSingleChestWithDirection(world, x + 1, y, z, direction)) {
-					type = Type.LEFT;
-					setType(world, x - 1, y, z, Type.RIGHT);
-				}
-
-				if (isSingleChestWithDirection(world, x + 1, y, z, direction) && !isSingleChestWithDirection(world, x - 1, y, z, direction)) {
-					type = Type.RIGHT;
-					setType(world, x + 1, y, z, Type.LEFT);
-				}
+			if (isSingleChestWithDirection(world, x, y - 1, z, direction) && !isSingleChestWithDirection(world, x, y + 1, z, direction)) {
+				type = Type.UP;
+				setType(world, x, y - 1, z, Type.DOWN);
 			}
 
-			if (direction == Direction.EAST) {
-				if (isSingleChestWithDirection(world, x, y, z - 1, direction) && !isSingleChestWithDirection(world, x, y, z + 1, direction)) {
-					type = Type.LEFT;
-					setType(world, x, y, z - 1, Type.RIGHT);
-				}
-
-				if (isSingleChestWithDirection(world, x, y, z + 1, direction) && !isSingleChestWithDirection(world, x, y, z - 1, direction)) {
-					type = Type.RIGHT;
-					setType(world, x, y, z + 1, Type.LEFT);
-				}
-			}
-
-			if (direction == Direction.SOUTH) {
-				if (isSingleChestWithDirection(world, x - 1, y, z, direction) && !isSingleChestWithDirection(world, x + 1, y, z, direction)) {
-					type = Type.RIGHT;
-					setType(world, x - 1, y, z, Type.LEFT);
-				}
-
-				if (isSingleChestWithDirection(world, x + 1, y, z, direction) && !isSingleChestWithDirection(world, x - 1, y, z, direction)) {
-					type = Type.LEFT;
-					setType(world, x + 1, y, z, Type.RIGHT);
-				}
-			}
-
-			if (direction == Direction.WEST) {
-				if (isSingleChestWithDirection(world, x, y, z - 1, direction) && !isSingleChestWithDirection(world, x, y, z + 1, direction)) {
-					type = Type.RIGHT;
-					setType(world, x, y, z - 1, Type.LEFT);
-				}
-
-				if (isSingleChestWithDirection(world, x, y, z + 1, direction) && !isSingleChestWithDirection(world, x, y, z - 1, direction)) {
-					type = Type.LEFT;
-					setType(world, x, y, z + 1, Type.RIGHT);
-				}
+			if (isSingleChestWithDirection(world, x, y + 1, z, direction) && !isSingleChestWithDirection(world, x, y - 1, z, direction)) {
+				type = Type.DOWN;
+				setType(world, x, y + 1, z, Type.UP);
 			}
 		}
 
@@ -166,52 +84,15 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 	public void onBlockPlacedOnSide(World world, int x, int y, int z, @NotNull Side side, double xPlaced, double yPlaced) {
 		Direction direction = side.getDirection();
 		Type type = Type.SINGLE;
-		if (direction == Direction.NORTH) {
-			if (isSingleChestWithDirection(world, x - 1, y, z, direction) && !isSingleChestWithDirection(world, x + 1, y, z, direction)) {
-				type = Type.LEFT;
-				setType(world, x - 1, y, z, Type.RIGHT);
-			}
 
-			if (isSingleChestWithDirection(world, x + 1, y, z, direction) && !isSingleChestWithDirection(world, x - 1, y, z, direction)) {
-				type = Type.RIGHT;
-				setType(world, x + 1, y, z, Type.LEFT);
-			}
+		if (isSingleChestWithDirection(world, x, y - 1, z, direction) && !isSingleChestWithDirection(world, x, y + 1, z, direction)) {
+			type = Type.UP;
+			setType(world, x, y - 1, z, Type.DOWN);
 		}
 
-		if (direction == Direction.EAST) {
-			if (isSingleChestWithDirection(world, x, y, z - 1, direction) && !isSingleChestWithDirection(world, x, y, z + 1, direction)) {
-				type = Type.LEFT;
-				setType(world, x, y, z - 1, Type.RIGHT);
-			}
-
-			if (isSingleChestWithDirection(world, x, y, z + 1, direction) && !isSingleChestWithDirection(world, x, y, z - 1, direction)) {
-				type = Type.RIGHT;
-				setType(world, x, y, z + 1, Type.LEFT);
-			}
-		}
-
-		if (direction == Direction.SOUTH) {
-			if (isSingleChestWithDirection(world, x - 1, y, z, direction) && !isSingleChestWithDirection(world, x + 1, y, z, direction)) {
-				type = Type.RIGHT;
-				setType(world, x - 1, y, z, Type.LEFT);
-			}
-
-			if (isSingleChestWithDirection(world, x + 1, y, z, direction) && !isSingleChestWithDirection(world, x - 1, y, z, direction)) {
-				type = Type.LEFT;
-				setType(world, x + 1, y, z, Type.RIGHT);
-			}
-		}
-
-		if (direction == Direction.WEST) {
-			if (isSingleChestWithDirection(world, x, y, z - 1, direction) && !isSingleChestWithDirection(world, x, y, z + 1, direction)) {
-				type = Type.RIGHT;
-				setType(world, x, y, z - 1, Type.LEFT);
-			}
-
-			if (isSingleChestWithDirection(world, x, y, z + 1, direction) && !isSingleChestWithDirection(world, x, y, z - 1, direction)) {
-				type = Type.LEFT;
-				setType(world, x, y, z + 1, Type.RIGHT);
-			}
+		if (isSingleChestWithDirection(world, x, y + 1, z, direction) && !isSingleChestWithDirection(world, x, y - 1, z, direction)) {
+			type = Type.DOWN;
+			setType(world, x, y + 1, z, Type.UP);
 		}
 
 		int meta = world.getBlockMetadata(x, y, z);
@@ -225,54 +106,23 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		Type type = getTypeFromMeta(meta);
 		if (type != Type.SINGLE) {
 			Direction direction = getDirectionFromMeta(meta);
-			int otherChestX = x;
-			int otherChestZ = z;
-			if (direction == Direction.NORTH) {
-				if (type == Type.LEFT) {
-					otherChestX = x - 1;
-				}
+			int otherChestY = y;
 
-				if (type == Type.RIGHT) {
-					++otherChestX;
-				}
+			if (type == Type.UP) {
+				otherChestY = y - 1;
 			}
 
-			if (direction == Direction.EAST) {
-				if (type == Type.LEFT) {
-					otherChestZ = z - 1;
-				}
-
-				if (type == Type.RIGHT) {
-					++otherChestZ;
-				}
-			}
-
-			if (direction == Direction.SOUTH) {
-				if (type == Type.LEFT) {
-					++otherChestX;
-				}
-
-				if (type == Type.RIGHT) {
-					--otherChestX;
-				}
-			}
-
-			if (direction == Direction.WEST) {
-				if (type == Type.LEFT) {
-					++otherChestZ;
-				}
-
-				if (type == Type.RIGHT) {
-					--otherChestZ;
-				}
+			if (type == Type.DOWN) {
+				otherChestY = y + 1;
 			}
 
 			boolean valid = false;
-			if (isChest(world, otherChestX, y, otherChestZ)) {
-				int otherMeta = world.getBlockMetadata(otherChestX, y, otherChestZ);
+
+			if (isChest(world, x, otherChestY, z)) {
+				int otherMeta = world.getBlockMetadata(x, otherChestY, z);
 				if (getDirectionFromMeta(otherMeta) == direction) {
 					Type otherType = getTypeFromMeta(otherMeta);
-					if (type == Type.LEFT && otherType == Type.RIGHT || type == Type.RIGHT && otherType == Type.LEFT) {
+					if (type == Type.UP && otherType == Type.DOWN || type == Type.DOWN && otherType == Type.UP) {
 						valid = true;
 					}
 				}
@@ -367,59 +217,27 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		if (type != Type.SINGLE) {
 			Container inv2 = null;
 			Direction direction = getDirectionFromMeta(meta);
-			int otherChestX = x;
-			int otherChestZ = z;
-			if (direction == Direction.NORTH) {
-				if (type == Type.LEFT) {
-					otherChestX = x - 1;
-				}
+			int otherChestY = y;
 
-				if (type == Type.RIGHT) {
-					++otherChestX;
-				}
+			if (type == Type.UP) {
+				otherChestY = y - 1;
 			}
 
-			if (direction == Direction.EAST) {
-				if (type == Type.LEFT) {
-					otherChestZ = z - 1;
-				}
-
-				if (type == Type.RIGHT) {
-					++otherChestZ;
-				}
+			if (type == Type.DOWN) {
+				otherChestY = y + 1;
 			}
 
-			if (direction == Direction.SOUTH) {
-				if (type == Type.LEFT) {
-					++otherChestX;
-				}
-
-				if (type == Type.RIGHT) {
-					--otherChestX;
-				}
-			}
-
-			if (direction == Direction.WEST) {
-				if (type == Type.LEFT) {
-					++otherChestZ;
-				}
-
-				if (type == Type.RIGHT) {
-					--otherChestZ;
-				}
-			}
-
-			if (isChest(world, otherChestX, y, otherChestZ)) {
-				int otherMeta = world.getBlockMetadata(otherChestX, y, otherChestZ);
+			if (isChest(world, x, otherChestY, z)) {
+				int otherMeta = world.getBlockMetadata(x, otherChestY, z);
 				if (getDirectionFromMeta(otherMeta) == direction) {
 					Type otherType = getTypeFromMeta(otherMeta);
-					if (type == Type.LEFT && otherType == Type.RIGHT) {
-						inv2 = (Container) world.getTileEntity(otherChestX, y, otherChestZ);
+					if (type == Type.UP && otherType == Type.DOWN) {
+						inv2 = (Container) world.getTileEntity(x, otherChestY, z);
 					}
 
-					if (type == Type.RIGHT && otherType == Type.LEFT) {
+					if (type == Type.DOWN && otherType == Type.UP) {
 						inv2 = inventory;
-						inventory = (Container) world.getTileEntity(otherChestX, y, otherChestZ);
+						inventory = (Container) world.getTileEntity(x, otherChestY, z);
 					}
 				}
 			}
@@ -481,8 +299,8 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 
 	public static enum Type {
 		SINGLE,
-		LEFT,
-		RIGHT;
+		DOWN,
+		UP;
 
 		private Type() {
 		}

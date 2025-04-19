@@ -62,37 +62,13 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		Side facing = BlockLogicCupboard.getDirectionFromMeta(meta).getSide();
 		BlockLogicCupboard.Type type = BlockLogicCupboard.getTypeFromMeta(meta);
 		if (side == Side.TOP) {
-			if (type == BlockLogicCupboard.Type.RIGHT) {
-				return this.chestTopRight;
-			} else {
-				return type == BlockLogicCupboard.Type.LEFT ? this.chestTopLeft : this.chestTop;
-			}
+			return this.chestTop;
 		} else if (side == Side.BOTTOM) {
 			return this.chestTop;
 		} else if (type == BlockLogicCupboard.Type.SINGLE && side == facing) {
-			return this.chestFrontSingle;
+			return this.chestTop;
 		} else {
-			if (type == BlockLogicCupboard.Type.LEFT) {
-				if (side == facing) {
-					return this.chestFrontLeft;
-				}
-
-				if (side == facing.getOpposite()) {
-					return this.chestBackRight;
-				}
-			}
-
-			if (type == BlockLogicCupboard.Type.RIGHT) {
-				if (side == facing) {
-					return this.chestFrontRight;
-				}
-
-				if (side == facing.getOpposite()) {
-					return this.chestBackLeft;
-				}
-			}
-
-			return side.getAxis() != Axis.Y ? this.chestSide : this.chestTop;
+			return this.chestTop;
 		}
 	}
 
