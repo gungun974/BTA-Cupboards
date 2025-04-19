@@ -15,6 +15,7 @@ import net.minecraft.core.util.helper.Direction;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.util.phys.AABB;
 import net.minecraft.core.world.WorldSource;
+import org.lwjgl.opengl.GL11;
 
 @Environment(EnvType.CLIENT)
 public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard<T> {
@@ -47,9 +48,12 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		this.cupboardSingle = TextureRegistry.getTexture("cupboards:block/cupboard_single");
 		this.cupboardTop = TextureRegistry.getTexture("cupboards:block/cupboard_top");
 		this.cupboardBottom = TextureRegistry.getTexture("cupboards:block/cupboard_bottom");
+
+		renderLayer = 1;
 	}
 
 	public boolean render(Tessellator tessellator, int x, int y, int z) {
+
 		int meta = renderBlocks.blockAccess.getBlockMetadata(x, y, z);
 		Side facing = BlockLogicCupboard.getDirectionFromMeta(meta).getSide();
 		Direction dir = BlockLogicCupboard.getDirectionFromMeta(meta);
@@ -72,6 +76,8 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 
 		this.renderStandardBlock(tessellator, bounds, x, y, z);
 		this.resetRenderBlocks();
+
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		int color = ((BlockColor) BlockColorDispatcher.getInstance().getDispatch(block)).getWorldColor(renderBlocks.blockAccess, x, y, z);
 		float r = (float)(color >> 16 & 255) / 255.0F;
