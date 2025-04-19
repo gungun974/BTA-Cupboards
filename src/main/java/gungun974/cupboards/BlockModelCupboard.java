@@ -57,6 +57,7 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		int meta = renderBlocks.blockAccess.getBlockMetadata(x, y, z);
 		Side facing = BlockLogicCupboard.getDirectionFromMeta(meta).getSide();
 		Direction dir = BlockLogicCupboard.getDirectionFromMeta(meta);
+		boolean mirrored = BlockLogicCupboard.getMirroredFromMeta(meta);
 		renderBlocks.uvRotateEast = 2;
 		renderBlocks.uvRotateWest = 1;
 		renderBlocks.uvRotateSouth = 2;
@@ -74,8 +75,12 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 
 		AABB bounds = this.block.getBlockBoundsFromState(renderBlocks.blockAccess, x, y, z);
 
+		renderBlocks.flipTexture = mirrored;
+
 		this.renderStandardBlock(tessellator, bounds, x, y, z);
 		this.resetRenderBlocks();
+
+		renderBlocks.flipTexture = mirrored;
 
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 

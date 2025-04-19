@@ -30,6 +30,32 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 	public void onBlockPlacedByMob(World world, int x, int y, int z, @NotNull Side placeSide, Mob mob, double xPlaced, double yPlaced) {
 		Direction direction = mob.getHorizontalPlacementDirection(placeSide).getOpposite();
 		Type type = Type.SINGLE;
+		boolean mirrored = false;
+
+		if (direction == Direction.NORTH) {
+			if (isWithDirection(world, x + 1, y, z, direction)) {
+				mirrored = true;
+			}
+		}
+
+		if (direction == Direction.EAST) {
+			if (isWithDirection(world, x, y, z + 1, direction)) {
+				mirrored = true;
+			}
+		}
+
+		if (direction == Direction.SOUTH) {
+			if (isWithDirection(world, x - 1, y, z, direction)) {
+				mirrored = true;
+			}
+		}
+
+		if (direction == Direction.WEST) {
+			if (isWithDirection(world, x, y, z - 1, direction)) {
+				mirrored = true;
+			}
+		}
+
 		if (mob.isSneaking() && placeSide.isHorizontal() && (mob.rotationLockHorizontal == null || mob.rotationLockHorizontal == Direction.NONE)) {
 			int placedOnX = x;
 			int placedOnZ = z;
@@ -67,37 +93,68 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 			if (isSingleChestWithDirection(world, x, y - 1, z, direction) && !isSingleChestWithDirection(world, x, y + 1, z, direction)) {
 				type = Type.UP;
 				setType(world, x, y - 1, z, Type.DOWN);
+				mirrored = getMirrored(world, x, y - 1, z);
 			}
 
 			if (isSingleChestWithDirection(world, x, y + 1, z, direction) && !isSingleChestWithDirection(world, x, y - 1, z, direction)) {
 				type = Type.DOWN;
 				setType(world, x, y + 1, z, Type.UP);
+				mirrored = getMirrored(world, x, y + 1, z);
 			}
 		}
 
 		int meta = world.getBlockMetadata(x, y, z);
 		meta = getMetaWithDirection(meta, direction);
 		meta = getMetaWithType(meta, type);
+		meta = getMetaWithMirrored(meta, mirrored);
 		world.setBlockMetadata(x, y, z, meta);
 	}
 
 	public void onBlockPlacedOnSide(World world, int x, int y, int z, @NotNull Side side, double xPlaced, double yPlaced) {
 		Direction direction = side.getDirection();
 		Type type = Type.SINGLE;
+		boolean mirrored = false;
+
+		if (direction == Direction.NORTH) {
+			if (isWithDirection(world, x + 1, y, z, direction)) {
+				mirrored = true;
+			}
+		}
+
+		if (direction == Direction.EAST) {
+			if (isWithDirection(world, x, y, z + 1, direction)) {
+				mirrored = true;
+			}
+		}
+
+		if (direction == Direction.SOUTH) {
+			if (isWithDirection(world, x - 1, y, z, direction)) {
+				mirrored = true;
+			}
+		}
+
+		if (direction == Direction.WEST) {
+			if (isWithDirection(world, x, y, z - 1, direction)) {
+				mirrored = true;
+			}
+		}
 
 		if (isSingleChestWithDirection(world, x, y - 1, z, direction) && !isSingleChestWithDirection(world, x, y + 1, z, direction)) {
 			type = Type.UP;
 			setType(world, x, y - 1, z, Type.DOWN);
+			mirrored = getMirrored(world, x, y - 1, z);
 		}
 
 		if (isSingleChestWithDirection(world, x, y + 1, z, direction) && !isSingleChestWithDirection(world, x, y - 1, z, direction)) {
 			type = Type.DOWN;
 			setType(world, x, y + 1, z, Type.UP);
+			mirrored = getMirrored(world, x, y + 1, z);
 		}
 
 		int meta = world.getBlockMetadata(x, y, z);
 		meta = getMetaWithDirection(meta, direction);
 		meta = getMetaWithType(meta, type);
+		meta = getMetaWithMirrored(meta, mirrored);
 		world.setBlockMetadata(x, y, z, meta);
 	}
 
@@ -182,6 +239,11 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		return isChest(world, x, y, z) && getTypeFromMeta(meta) == Type.SINGLE && getDirectionFromMeta(meta) == direction;
 	}
 
+	public static boolean isWithDirection(World world, int x, int y, int z, Direction direction) {
+		int meta = world.getBlockMetadata(x, y, z);
+		return isChest(world, x, y, z) && getDirectionFromMeta(meta) == direction;
+	}
+
 	public void setDirection(World world, int x, int y, int z, Direction direction) {
 		if (isChest(world, x, y, z)) {
 			world.setBlockMetadataWithNotify(x, y, z, getMetaWithDirection(world.getBlockMetadata(x, y, z), direction));
@@ -196,8 +258,19 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 
 	}
 
+	public static void setMirrored(World world, int x, int y, int z, boolean mirrored) {
+		if (isChest(world, x, y, z)) {
+			world.setBlockMetadataWithNotify(x, y, z, getMetaWithMirrored(world.getBlockMetadata(x, y, z), mirrored));
+		}
+
+	}
+
 	public static Direction getDirection(World world, int x, int y, int z) {
 		return isChest(world, x, y, z) ? getDirectionFromMeta(world.getBlockMetadata(x, y, z)) : null;
+	}
+
+	public static boolean getMirrored(World world, int x, int y, int z) {
+		return isChest(world, x, y, z) && getMirroredFromMeta(world.getBlockMetadata(x, y, z));
 	}
 
 	public boolean onBlockRightClicked(World world, int x, int y, int z, Player player, Side side, double xPlaced, double yPlaced) {
@@ -254,8 +327,8 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		if (direction == null) {
 			return meta;
 		} else {
-			meta &= -4;
-			meta |= direction.ordinal() << 0 & 3;
+			meta &= ~0b11;
+			meta |= direction.ordinal() & 0b11;
 			return meta;
 		}
 	}
@@ -264,14 +337,22 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		if (type == null) {
 			return meta;
 		} else {
-			meta &= -13;
-			meta |= type.ordinal() << 2 & 12;
+			meta &= ~0b1100;
+			meta |= (type.ordinal() << 2) & 0b1100;
 			return meta;
 		}
 	}
 
+	public static int getMetaWithMirrored(int meta, boolean mirrored) {
+		meta &= ~0b10000;
+		if (mirrored) {
+			meta |= 0b10000;
+		}
+		return meta;
+	}
+
 	public static Direction getDirectionFromMeta(int meta) {
-		meta &= 3;
+		meta &= 0b11;
 		switch (meta) {
 			case 0:
 				return Direction.NORTH;
@@ -287,7 +368,11 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 	}
 
 	public static Type getTypeFromMeta(int meta) {
-		return Type.get(meta >> 2 & 3);
+		return Type.get((meta >> 2) & 0b11);
+	}
+
+	public static boolean getMirroredFromMeta(int meta) {
+		return ((meta >> 4) & 1) == 1;
 	}
 
 	public void setColor(World world, int x, int y, int z, DyeColor color) {
