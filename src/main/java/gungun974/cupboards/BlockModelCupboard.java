@@ -59,7 +59,7 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		int meta = renderBlocks.blockAccess.getBlockMetadata(x, y, z);
 		Side facing = BlockLogicCupboard.getDirectionFromMeta(meta).getSide();
 		Direction dir = BlockLogicCupboard.getDirectionFromMeta(meta);
-		boolean mirrored = BlockLogicCupboard.getMirroredFromMeta(meta);
+		boolean mirrored = BlockLogicCupboard.getMirroredFromWorld(renderBlocks.blockAccess, x, y, z);
 		renderBlocks.uvRotateEast = 2;
 		renderBlocks.uvRotateWest = 1;
 		renderBlocks.uvRotateSouth = 2;

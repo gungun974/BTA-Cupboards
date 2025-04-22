@@ -2,6 +2,7 @@ package gungun974.cupboards;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.block.*;
+import net.minecraft.core.block.entity.TileEntity;
 import net.minecraft.core.block.material.Material;
 import net.minecraft.core.entity.Mob;
 import net.minecraft.core.entity.player.Player;
@@ -11,6 +12,7 @@ import net.minecraft.core.util.helper.Direction;
 import net.minecraft.core.util.helper.DyeColor;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.WorldSource;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -66,9 +68,8 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 			}
 
 			if (isSingleChest(world, x, placedOnY, z)) {
-				int meta2 = world.getBlockMetadata(x, placedOnY, z);
-				Direction direction2 = getDirectionFromMeta(meta2);
-				boolean mirrored2 = getMirroredFromMeta(meta2);
+				Direction direction2 = getDirectionFromMeta(world.getBlockMetadata(x, placedOnY, z));
+				boolean mirrored2 = getMirroredFromWorld(world, x, placedOnY, z);
 				if (placeSide == Side.TOP) {
 					type = Type.UP;
 					setType(world, x, placedOnY, z, Type.DOWN);
@@ -100,8 +101,8 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		int meta = world.getBlockMetadata(x, y, z);
 		meta = getMetaWithDirection(meta, direction);
 		meta = getMetaWithType(meta, type);
-		meta = getMetaWithMirrored(meta, mirrored);
 		world.setBlockMetadata(x, y, z, meta);
+		setMirrored(world, x, y, z, mirrored);
 	}
 
 	public void onBlockPlacedOnSide(World world, int x, int y, int z, @NotNull Side side, double xPlaced, double yPlaced) {
@@ -148,8 +149,8 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		int meta = world.getBlockMetadata(x, y, z);
 		meta = getMetaWithDirection(meta, direction);
 		meta = getMetaWithType(meta, type);
-		meta = getMetaWithMirrored(meta, mirrored);
 		world.setBlockMetadata(x, y, z, meta);
+		setMirrored(world, x, y, z, mirrored);
 	}
 
 	public void checkIfOtherHalfExists(World world, int x, int y, int z) {
@@ -254,7 +255,8 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 
 	public static void setMirrored(World world, int x, int y, int z, boolean mirrored) {
 		if (isChest(world, x, y, z)) {
-			world.setBlockMetadataWithNotify(x, y, z, getMetaWithMirrored(world.getBlockMetadata(x, y, z), mirrored));
+			setMirroredToWorld(world, x, y, z, mirrored);
+			world.markBlockNeedsUpdate(x, y, z);
 		}
 
 	}
@@ -264,7 +266,7 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 	}
 
 	public static boolean getMirrored(World world, int x, int y, int z) {
-		return isChest(world, x, y, z) && getMirroredFromMeta(world.getBlockMetadata(x, y, z));
+		return isChest(world, x, y, z) && getMirroredFromWorld(world, x, y, z);
 	}
 
 	public boolean onBlockRightClicked(World world, int x, int y, int z, Player player, Side side, double xPlaced, double yPlaced) {
@@ -337,12 +339,17 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		}
 	}
 
-	public static int getMetaWithMirrored(int meta, boolean mirrored) {
-		meta &= ~0b10000;
-		if (mirrored) {
-			meta |= 0b10000;
+	public static void setMirroredToWorld(World world, int x, int y, int z, boolean mirrored) {
+		if (world == null) {
+			return;
 		}
-		return meta;
+
+		TileEntity tile = world.getTileEntity(x, y, z);
+		if (!(tile instanceof TileEntityCupboard)){
+			return;
+		}
+
+		((TileEntityCupboard) tile).shouldRenderMirrored = mirrored;
 	}
 
 	public static Direction getDirectionFromMeta(int meta) {
@@ -365,8 +372,17 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		return Type.get((meta >> 2) & 0b11);
 	}
 
-	public static boolean getMirroredFromMeta(int meta) {
-		return ((meta >> 4) & 1) == 1;
+	public static boolean getMirroredFromWorld(WorldSource world, int x, int y, int z) {
+		if (world == null) {
+			return false;
+		}
+
+		TileEntity tile = world.getTileEntity(x, y, z);
+		if (!(tile instanceof TileEntityCupboard)){
+			return false;
+		}
+
+		return ((TileEntityCupboard) tile).shouldRenderMirrored;
 	}
 
 	public void setColor(World world, int x, int y, int z, DyeColor color) {

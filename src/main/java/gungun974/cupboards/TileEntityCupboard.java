@@ -9,6 +9,8 @@ import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.EntityItem;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.net.packet.Packet;
+import net.minecraft.core.net.packet.PacketTileEntityData;
 import net.minecraft.core.player.inventory.InventorySorter;
 import net.minecraft.core.player.inventory.container.Container;
 import net.minecraft.core.util.helper.Direction;
@@ -17,6 +19,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class TileEntityCupboard extends TileEntity implements Container {
     private ItemStack[] chestContents = new ItemStack[36];
+
+	public boolean shouldRenderMirrored = false;
 
     public TileEntityCupboard() {
     }
@@ -76,6 +80,7 @@ public class TileEntityCupboard extends TileEntity implements Container {
             }
         }
 
+		this.shouldRenderMirrored = nbttagcompound.getBoolean("Mirrored");
     }
 
     public void writeToNBT(CompoundTag nbttagcompound) {
@@ -92,9 +97,16 @@ public class TileEntityCupboard extends TileEntity implements Container {
         }
 
         nbttagcompound.put("Items", nbttaglist);
+
+		nbttagcompound.putBoolean("Mirrored", this.shouldRenderMirrored);
     }
 
-    public int getMaxStackSize() {
+	@Override
+	public Packet getDescriptionPacket() {
+		return new PacketTileEntityData(this);
+	}
+
+	public int getMaxStackSize() {
         return 64;
     }
 
