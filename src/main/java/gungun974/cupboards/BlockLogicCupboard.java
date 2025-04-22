@@ -2,7 +2,6 @@ package gungun974.cupboards;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.block.*;
-import net.minecraft.core.block.entity.TileEntityChest;
 import net.minecraft.core.block.material.Material;
 import net.minecraft.core.entity.Mob;
 import net.minecraft.core.entity.player.Player;
@@ -24,7 +23,7 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 
 	public BlockLogicCupboard(Block<?> block, Material material) {
 		super(block, material);
-		block.withEntity(TileEntityChest::new);
+		block.withEntity(TileEntityCupboard::new);
 	}
 
 	public void onBlockPlacedByMob(World world, int x, int y, int z, @NotNull Side placeSide, Mob mob, double xPlaced, double yPlaced) {

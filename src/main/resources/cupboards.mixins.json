@@ -1,13 +1,15 @@
 {
-    "required": true,
-    "minVersion": "0.8",
-    "package": "turniplabs.examplemod.mixin",
-    "compatibilityLevel": "JAVA_8",
-    "mixins": [
-    ],
-    "client": [
-    ],
-    "injectors": {
-        "defaultRequire": 1
+  "required": true,
+  "minVersion": "0.8",
+  "package": "gungun974.cupboards.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "EntityMinecartMixin"
+  ],
+  "client": [
+    "EntityRendererMinecartMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
   }
 }
