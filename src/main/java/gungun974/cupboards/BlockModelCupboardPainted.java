@@ -53,11 +53,7 @@ public class BlockModelCupboardPainted<T extends BlockLogic> extends BlockModelC
 
 	public IconCoordinate getBlockTextureFromSideAndMetadata(Side side, int data) {
 		int color = data >> 4;
-		if (side == Side.SOUTH) {
-			return texCoords[color][0];
-		} else {
-			return side.isHorizontal() ? texCoords[color][5] : texCoords[color][6];
-		}
+		return texCoords[color][TEX_TOP];
 	}
 
 	static {

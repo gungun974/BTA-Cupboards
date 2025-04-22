@@ -2,6 +2,7 @@ package gungun974.cupboards;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.render.LightmapHelper;
 import net.minecraft.client.render.block.color.BlockColor;
 import net.minecraft.client.render.block.color.BlockColorDispatcher;
 import net.minecraft.client.render.block.model.BlockModel;
@@ -15,6 +16,7 @@ import net.minecraft.core.util.helper.Direction;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.util.phys.AABB;
 import net.minecraft.core.world.WorldSource;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
 @Environment(EnvType.CLIENT)
@@ -123,6 +125,40 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		return true;
 	}
 
+	@Override
+	public void renderBlockOnInventory(Tessellator tessellator, int metadata, float brightness, @Nullable Integer lightmapCoordinate) {
+		if (renderBlocks.useInventoryTint) {
+			int color = ((BlockColor)BlockColorDispatcher.getInstance().getDispatch(this.block)).getFallbackColor(metadata);
+			float r = (float)(color >> 16 & 255) / 255.0F;
+			float g = (float)(color >> 8 & 255) / 255.0F;
+			float b = (float)(color & 255) / 255.0F;
+			GL11.glColor4f(r * brightness, g * brightness, b * brightness, 1.0F);
+		} else {
+			GL11.glColor4f(brightness, brightness, brightness, 1.0F);
+		}
+
+		float yOffset = 0.5F;
+		AABB bounds = this.getBlockBoundsForItemRender();
+		GL11.glTranslatef(-0.5F, 0.0F - yOffset, -0.5F);
+
+		this.renderBlockWithBounds(tessellator, bounds, metadata, brightness, 1.0F, lightmapCoordinate);
+
+
+		if (LightmapHelper.isLightmapEnabled() && lightmapCoordinate != null) {
+			LightmapHelper.setLightmapCoord(lightmapCoordinate);
+		}
+
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, 1.0F);
+		this.renderSouthFace(tessellator, bounds, (double)0.0F, (double)0.0F, (double)0.0F, cupboardSingle);
+		tessellator.draw();
+
+		GL11.glTranslatef(0.5F, yOffset, 0.5F);
+	}
+
 	public final void renderSide(Tessellator tessellator, BlockModel<?> blockModel, AABB bounds, int x, int y, int z, float r, float g, float b, int side, int meta, int dirX, int dirY, int dirZ, float depth, int topX, int topY, int topZ, float topP, float botP, int lefX, int lefY, int lefZ, float lefP, float rigP) {
 		IconCoordinate tex = cupboardSingle;
 
@@ -184,10 +220,6 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 	}
 
 	public IconCoordinate getBlockTextureFromSideAndMetadata(Side side, int data) {
-		if (side == Side.SOUTH) {
-			return this.chestFrontSingle;
-		} else {
-			return side.isHorizontal() ? this.chestSide : this.chestTop;
-		}
+		return this.chestTop;
 	}
 }
