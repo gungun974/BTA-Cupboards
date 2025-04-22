@@ -159,6 +159,11 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		GL11.glTranslatef(0.5F, yOffset, 0.5F);
 	}
 
+	@Override
+	public void renderBlockOnInventory(Tessellator tessellator, int metadata, float brightness, float alpha, @Nullable Integer lightmapCoordinate) {
+		this.renderBlockOnInventory(tessellator, metadata, brightness, lightmapCoordinate);
+	}
+
 	public final void renderSide(Tessellator tessellator, BlockModel<?> blockModel, AABB bounds, int x, int y, int z, float r, float g, float b, int side, int meta, int dirX, int dirY, int dirZ, float depth, int topX, int topY, int topZ, float topP, float botP, int lefX, int lefY, int lefZ, float lefP, float rigP) {
 		IconCoordinate tex = cupboardSingle;
 
