@@ -31,38 +31,23 @@ public class BlockModelCupboardPainted<T extends BlockLogic> extends BlockModelC
 	public IconCoordinate getBlockTexture(WorldSource blockAccess, int x, int y, int z, Side side) {
 		int meta = blockAccess.getBlockMetadata(x, y, z);
 		int color = meta >> 4;
-		Side facing = BlockLogicCupboard.getDirectionFromMeta(meta).getSide();
 		BlockLogicCupboard.Type type = BlockLogicCupboard.getTypeFromMeta(meta);
-		if (side != Side.TOP && side != Side.BOTTOM) {
-			if (type == BlockLogicCupboard.Type.SINGLE && side == facing) {
-				return texCoords[color][0];
-			} else {
-				if (type == BlockLogicCupboard.Type.UP) {
-					if (side == facing) {
-						return texCoords[color][1];
-					}
-
-					if (side == facing.getOpposite()) {
-						return texCoords[color][4];
-					}
-				}
-
-				if (type == BlockLogicCupboard.Type.DOWN) {
-					if (side == facing) {
-						return texCoords[color][2];
-					}
-
-					if (side == facing.getOpposite()) {
-						return texCoords[color][3];
-					}
-				}
-
-				return side.getAxis() != Axis.Y ? texCoords[color][5] : texCoords[color][6];
-			}
-		} else if (type == BlockLogicCupboard.Type.UP) {
-			return texCoords[color][7];
+		if (side == Side.TOP) {
+			return texCoords[color][TEX_TOP];
+		} else if (side == Side.BOTTOM) {
+			return texCoords[color][TEX_TOP];
+		} else if (type == BlockLogicCupboard.Type.SINGLE) {
+			return texCoords[color][TEX_TOP];
 		} else {
-			return type == BlockLogicCupboard.Type.DOWN ? texCoords[color][8] : texCoords[color][6];
+			if (type == BlockLogicCupboard.Type.UP) {
+				return texCoords[color][TEX_LEFT_TOP];
+			}
+
+			if (type == BlockLogicCupboard.Type.DOWN) {
+				return texCoords[color][TEX_RIGHT_TOP];
+			}
+
+			return texCoords[color][TEX_TOP];
 		}
 	}
 
