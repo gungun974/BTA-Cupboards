@@ -56,37 +56,32 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 			}
 		}
 
-		if (mob.isSneaking() && placeSide.isHorizontal() && (mob.rotationLockHorizontal == null || mob.rotationLockHorizontal == Direction.NONE)) {
-			int placedOnX = x;
-			int placedOnZ = z;
-			if (placeSide == Side.NORTH) {
-				placedOnZ = z + 1;
+		if (mob.isSneaking() && placeSide.isVertical() && (mob.rotationLockHorizontal == null || mob.rotationLockHorizontal == Direction.NONE)) {
+			int placedOnY = y;
+			if (placeSide == Side.TOP) {
+				placedOnY = y - 1;
 			}
 
-			if (placeSide == Side.SOUTH) {
-				--placedOnZ;
+			if (placeSide == Side.BOTTOM) {
+				placedOnY = y + 1;
 			}
 
-			if (placeSide == Side.EAST) {
-				placedOnX = x - 1;
-			}
-
-			if (placeSide == Side.WEST) {
-				++placedOnX;
-			}
-
-			if (isSingleChest(world, placedOnX, y, placedOnZ)) {
-				Direction direction2 = getDirectionFromMeta(world.getBlockMetadata(placedOnX, y, placedOnZ));
+			if (isSingleChest(world, x, placedOnY, z)) {
+				int meta2 = world.getBlockMetadata(x, placedOnY, z);
+				Direction direction2 = getDirectionFromMeta(meta2);
+				boolean mirrored2 = getMirroredFromMeta(meta2);
 				if (placeSide == Side.TOP) {
-					setType(world, placedOnX, y, placedOnZ, Type.UP);
-					type = Type.DOWN;
+					type = Type.UP;
+					setType(world, x, placedOnY, z, Type.DOWN);
 					direction = direction2;
+					mirrored = mirrored2;
 				}
 
 				if (placeSide == Side.BOTTOM) {
-					setType(world, placedOnX, y, placedOnZ, Type.DOWN);
-					type = Type.UP;
+					type = Type.DOWN;
+					setType(world, x, placedOnY, z, Type.UP);
 					direction = direction2;
+					mirrored = mirrored2;
 				}
 			}
 		} else if (!mob.isSneaking()) {
