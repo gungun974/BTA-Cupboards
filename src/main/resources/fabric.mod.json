@@ -31,7 +31,7 @@
 			"gungun974.cupboards.CupboardsMod"
 		],
 		"recipesReady": [
-			"gungun974.cupboards.CupboardsMod"
+			"gungun974.cupboards.CupboardsRecipe"
 		]
 	},
   "mixins": [

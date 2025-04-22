@@ -1,0 +1,850 @@
+[
+  {
+    "name": "cupboards:workbench/black_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye"
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 240
+    }
+  },
+  {
+    "name": "cupboards:workbench/blue_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 4
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 176
+    }
+  },
+  {
+    "name": "cupboards:workbench/brown_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 3
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 192
+    }
+  },
+  {
+    "name": "cupboards:workbench/cupboards_undyeing",
+    "type": "minecraft:crafting/undyeing",
+    "input": {
+      "group": "cupboards:cupboards"
+    },
+    "output": {
+      "id": "cupboards:block/cupboard"
+    }
+  },
+  {
+    "name": "cupboards:workbench/cyan_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 6
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 144
+    }
+  },
+  {
+    "name": "cupboards:workbench/gray_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 8
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 112
+    }
+  },
+  {
+    "name": "cupboards:workbench/green_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 2
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 208
+    }
+  },
+  {
+    "name": "cupboards:workbench/lightblue_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 12
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 48
+    }
+  },
+  {
+    "name": "cupboards:workbench/lime_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 10
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 80
+    }
+  },
+  {
+    "name": "cupboards:workbench/magenta_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 13
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 32
+    }
+  },
+  {
+    "name": "cupboards:workbench/orange_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 14
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 16
+    }
+  },
+  {
+    "name": "cupboards:workbench/pink_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 9
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 96
+    }
+  },
+  {
+    "name": "cupboards:workbench/purple_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 5
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 160
+    }
+  },
+  {
+    "name": "cupboards:workbench/red_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 1
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 224
+    }
+  },
+  {
+    "name": "cupboards:workbench/silver_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 7
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 128
+    }
+  },
+  {
+    "name": "cupboards:workbench/white_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 15
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted"
+    }
+  },
+  {
+    "name": "cupboards:workbench/yellow_wooden_cupboard_from_cupboard",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "group": "cupboards:cupboards"
+      },
+      {
+        "stack": {
+          "id": "minecraft:item/dye",
+          "meta": 11
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 64
+    }
+  },
+  {
+    "name": "cupboards:workbench/cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak"
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard"
+    }
+  },
+  {
+    "name": "cupboards:workbench/black_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 240
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 240
+    }
+  },
+  {
+    "name": "cupboards:workbench/blue_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 176
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 176
+    }
+  },
+  {
+    "name": "cupboards:workbench/brown_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 192
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 192
+    }
+  },
+  {
+    "name": "cupboards:workbench/cyan_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 144
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 144
+    }
+  },
+  {
+    "name": "cupboards:workbench/gray_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 112
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 112
+    }
+  },
+  {
+    "name": "cupboards:workbench/green_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 208
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 208
+    }
+  },
+  {
+    "name": "cupboards:workbench/lightblue_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 48
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 48
+    }
+  },
+  {
+    "name": "cupboards:workbench/lime_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 80
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 80
+    }
+  },
+  {
+    "name": "cupboards:workbench/magenta_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 32
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 32
+    }
+  },
+  {
+    "name": "cupboards:workbench/orange_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 16
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 16
+    }
+  },
+  {
+    "name": "cupboards:workbench/pink_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 96
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 96
+    }
+  },
+  {
+    "name": "cupboards:workbench/purple_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 160
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 160
+    }
+  },
+  {
+    "name": "cupboards:workbench/red_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 224
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 224
+    }
+  },
+  {
+    "name": "cupboards:workbench/silver_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 128
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 128
+    }
+  },
+  {
+    "name": "cupboards:workbench/white_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted"
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted"
+    }
+  },
+  {
+    "name": "cupboards:workbench/yellow_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "minecraft:block/chest_planks_oak_painted",
+          "meta": 64
+        }
+      }
+    ],
+    "result": {
+      "id": "cupboards:block/cupboard_painted",
+      "meta": 64
+    }
+  },
+  {
+    "name": "cupboards:workbench/cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard"
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak"
+    }
+  },
+  {
+    "name": "cupboards:workbench/black_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 240
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 240
+    }
+  },
+  {
+    "name": "cupboards:workbench/blue_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 176
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 176
+    }
+  },
+  {
+    "name": "cupboards:workbench/brown_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 192
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 192
+    }
+  },
+  {
+    "name": "cupboards:workbench/cyan_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 144
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 144
+    }
+  },
+  {
+    "name": "cupboards:workbench/gray_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 112
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 112
+    }
+  },
+  {
+    "name": "cupboards:workbench/green_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 208
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 208
+    }
+  },
+  {
+    "name": "cupboards:workbench/lightblue_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 48
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 48
+    }
+  },
+  {
+    "name": "cupboards:workbench/lime_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 80
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 80
+    }
+  },
+  {
+    "name": "cupboards:workbench/magenta_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 32
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 32
+    }
+  },
+  {
+    "name": "cupboards:workbench/orange_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 16
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 16
+    }
+  },
+  {
+    "name": "cupboards:workbench/pink_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 96
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 96
+    }
+  },
+  {
+    "name": "cupboards:workbench/purple_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 160
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 160
+    }
+  },
+  {
+    "name": "cupboards:workbench/red_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 224
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 224
+    }
+  },
+  {
+    "name": "cupboards:workbench/silver_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 128
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 128
+    }
+  },
+  {
+    "name": "cupboards:workbench/white_wooden_cupboard_from_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted"
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted"
+    }
+  },
+  {
+    "name": "cupboards:workbench/yellow_wooden_cupboard_to_chest",
+    "type": "minecraft:crafting/shapeless",
+    "inputs": [
+      {
+        "stack": {
+          "id": "cupboards:block/cupboard_painted",
+          "meta": 64
+        }
+      }
+    ],
+    "result": {
+      "id": "minecraft:block/chest_planks_oak_painted",
+      "meta": 64
+    }
+  }
+]

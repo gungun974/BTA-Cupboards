@@ -1,13 +1,20 @@
 package gungun974.cupboards;
 
 import net.minecraft.core.block.Block;
+import net.minecraft.core.block.Blocks;
 import net.minecraft.core.block.material.Material;
 import net.minecraft.core.block.tag.BlockTags;
+import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.item.Items;
 import net.minecraft.core.item.block.ItemBlockPainted;
 import net.minecraft.core.sound.BlockSounds;
 import net.minecraft.core.util.collection.NamespaceID;
+import net.minecraft.core.util.helper.DyeColor;
 import turniplabs.halplibe.helper.BlockBuilder;
 import turniplabs.halplibe.helper.EntityHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static gungun974.cupboards.CupboardsMod.MOD_ID;
 
@@ -41,8 +48,7 @@ public class CupboardsBlocks {
 			.setTags(BlockTags.FENCES_CONNECT, BlockTags.MINEABLE_BY_AXE)
 			.setTileEntity(TileEntityCupboard::new)
 			.setBlockSound(BlockSounds.WOOD)
-			.setBlockItem((b) -> new ItemBlockPainted(b, true))
-			.build("cupboard.painted", generateNexId(), b -> new BlockLogicCupboardPainted(b, Material.wood));
-
+			.setBlockItem((b) -> new ItemBlockPainted<>(b, true))
+			.build("cupboard_painted", generateNexId(), b -> new BlockLogicCupboardPainted(b, Material.wood));
 	}
 }
