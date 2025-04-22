@@ -64,7 +64,7 @@ public class TileEntityCupboard extends TileEntity implements Container {
     }
 
     public String getNameTranslationKey() {
-        return "container.chest.name";
+        return "container.cupboard.name";
     }
 
     public void readFromNBT(CompoundTag nbttagcompound) {

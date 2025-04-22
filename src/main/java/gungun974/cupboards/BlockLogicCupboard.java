@@ -312,7 +312,7 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 			}
 
 			if (inv2 != null) {
-				inventory = new ContainerCompound("container.chest.large.name", inventory, inv2);
+				inventory = new ContainerCompound("container.cupboard.large.name", inventory, inv2);
 			}
 		}
 
