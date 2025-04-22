@@ -9,6 +9,7 @@ import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.entity.vehicle.EntityMinecart;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.container.Container;
+import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.ICarriable;
 import net.minecraft.core.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -45,6 +46,17 @@ public abstract class EntityMinecartMixin extends Entity {
 
 	@Shadow
 	public abstract int getMeta();
+
+	@Inject(method = "hurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/entity/vehicle/EntityMinecart;getType()B"))
+	public void dropCupboard(Entity entity, int baseDamage, DamageType type, CallbackInfoReturnable<Boolean> cir) {
+		if (this.getType() == 42) {
+			if ((this.getMeta() & 1) != 0) {
+				this.dropItem(new ItemStack(CupboardsBlocks.CUPBOARD_PAINTED, 1, this.getMeta() & 240), 0.0F);
+			} else {
+				this.dropItem(CupboardsBlocks.CUPBOARD.id(), 1, 0.0F);
+			}
+		}
+	}
 
 	@Inject(method = "interact", at = @At("HEAD"), cancellable = true)
 	public void interactWithCupboard(Player player, CallbackInfoReturnable<Boolean> cir) {
