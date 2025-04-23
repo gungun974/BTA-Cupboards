@@ -1,26 +1,26 @@
 {
-  "schemaVersion": 1,
-  "id": "cupboards",
-  "version": "${version}",
-
-  "name": "Cupboards Mod",
-  "description": "Cupboards, CUPBOARDS !",
-  "authors": [
-    "Gungun974"
-  ],
-  "contact": {
-    "homepage": "",
-    "sources": ""
-  },
-
+	"schemaVersion": 1,
+	"id": "cupboards",
+	"version": "${version}",
+	"name": "Cupboards Mod",
+	"description": "Cupboards, CUPBOARDS !",
+	"authors": [
+		"Gungun974"
+	],
+	"contributors": [
+		"Zainnhy"
+	],
+	"contact": {
+		"homepage": "https://github.com/gungun974/BTA-Cupboards",
+		"issues": "https://github.com/gungun974/BTA-Cupboards/issues"
+	},
 	"icon": "icon.png",
-  "license": "CC0-1.0",
-
-  "environment": "*",
-  "entrypoints": {
-    "main": [
+	"license": "CC0-1.0",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
 			"gungun974.cupboards.CupboardsMod"
-    ],
+		],
 		"initModels": [
 			"gungun974.cupboards.CupboardsModels"
 		],
@@ -34,14 +34,14 @@
 			"gungun974.cupboards.CupboardsRecipe"
 		]
 	},
-  "mixins": [
+	"mixins": [
 		"cupboards.mixins.json"
-  ],
-
-  "depends": {
-		"minecraft": "*",
-    "fabricloader": ">=0.15.5"
-  },
-  "suggests": {
-  }
+	],
+	"depends": {
+		"minecraft": "~7.3",
+		"fabricloader": ">=0.15.5",
+		"halplibe": ">=5.2.0"
+	},
+	"suggests": {
+	}
 }
