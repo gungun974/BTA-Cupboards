@@ -1,8 +1,6 @@
 package gungun974.cupboards.mixin;
 
 import gungun974.cupboards.CupboardsBlocks;
-import net.minecraft.core.block.Block;
-import net.minecraft.core.data.tag.Tag;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.menu.MenuInventoryCreative;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,8 +8,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
@@ -25,12 +23,14 @@ public class MenuInventoryCreativeMixin {
 	@Unique
 	private static int extraCount = 0;
 
-	@Redirect(
+	@Inject(
 		method = "<clinit>",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;hasTag(Lnet/minecraft/core/data/tag/Tag;)Z")
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;hasTag(Lnet/minecraft/core/data/tag/Tag;)Z"),
+		locals = LocalCapture.CAPTURE_FAILSOFT
+
 	)
-	private static boolean addBlocks(Block<?> block, Tag<Block<?>> tag) {
-		if (block.id() == CupboardsBlocks.CUPBOARD_PAINTED.id()) {
+	private static void addBlocks(CallbackInfo ci, int count, int id) {
+		if (id == CupboardsBlocks.CUPBOARD_PAINTED.id()) {
 			int before = creativeItems.size();
 
 			creativeItems.add(new ItemStack(CupboardsBlocks.CUPBOARD_PAINTED));
@@ -39,9 +39,7 @@ public class MenuInventoryCreativeMixin {
 				creativeItems.add(new ItemStack(CupboardsBlocks.CUPBOARD_PAINTED, 1, i));
 			}
 			extraCount += creativeItems.size() - before;
-			return true;
 		}
-		return block.hasTag(tag);
 	}
 
 	@Inject(

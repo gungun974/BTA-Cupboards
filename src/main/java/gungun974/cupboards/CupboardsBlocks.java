@@ -45,7 +45,7 @@ public class CupboardsBlocks {
 		CUPBOARD_PAINTED = new BlockBuilder(MOD_ID)
 			.setHardness(2.5f)
 			.setResistance(5.0f)
-			.setTags(BlockTags.FENCES_CONNECT, BlockTags.MINEABLE_BY_AXE)
+			.setTags(BlockTags.FENCES_CONNECT, BlockTags.MINEABLE_BY_AXE, BlockTags.NOT_IN_CREATIVE_MENU)
 			.setTileEntity(TileEntityCupboard::new)
 			.setBlockSound(BlockSounds.WOOD)
 			.setBlockItem((b) -> new ItemBlockPainted<>(b, true))
