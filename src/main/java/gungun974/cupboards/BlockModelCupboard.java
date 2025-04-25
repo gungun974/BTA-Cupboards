@@ -53,37 +53,41 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 	}
 
 	public boolean render(Tessellator tessellator, int x, int y, int z) {
-		GL11.glEnable(GL11.GL_BLEND);
-
 		int meta = renderBlocks.blockAccess.getBlockMetadata(x, y, z);
 		Side facing = BlockLogicCupboard.getDirectionFromMeta(meta).getSide();
 		Direction dir = BlockLogicCupboard.getDirectionFromMeta(meta);
 		boolean mirrored = BlockLogicCupboard.getMirroredFromWorld(renderBlocks.blockAccess, x, y, z);
-		renderBlocks.uvRotateEast = 2;
-		renderBlocks.uvRotateWest = 1;
-		renderBlocks.uvRotateSouth = 2;
-		renderBlocks.uvRotateNorth = 1;
-		switch (dir) {
-			case NORTH:
-				renderBlocks.uvRotateTop = 3;
-				break;
-			case EAST:
-				renderBlocks.uvRotateTop = 2;
-				break;
-			case WEST:
-				renderBlocks.uvRotateTop = 1;
-		}
 
 		AABB bounds = this.block.getBlockBoundsFromState(renderBlocks.blockAccess, x, y, z);
 
+		if (renderLayer == 0) {
+			renderBlocks.uvRotateEast = 2;
+			renderBlocks.uvRotateWest = 1;
+			renderBlocks.uvRotateSouth = 2;
+			renderBlocks.uvRotateNorth = 1;
+
+			switch (dir) {
+				case NORTH:
+					renderBlocks.uvRotateTop = 3;
+					break;
+				case EAST:
+					renderBlocks.uvRotateTop = 2;
+					break;
+				case WEST:
+					renderBlocks.uvRotateTop = 1;
+			}
+
+			renderBlocks.flipTexture = mirrored;
+
+			this.renderStandardBlock(tessellator, bounds, x, y, z);
+			this.resetRenderBlocks();
+
+			return true;
+		}
+
+		this.renderStandardBlock(tessellator, AABB.getTemporaryBB(0, 0, 0, 0, 0, 0), x, y, z);
+
 		renderBlocks.flipTexture = mirrored;
-
-		this.renderStandardBlock(tessellator, bounds, x, y, z);
-		this.resetRenderBlocks();
-
-		renderBlocks.flipTexture = mirrored;
-
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		int color = ((BlockColor) BlockColorDispatcher.getInstance().getDispatch(block)).getWorldColor(renderBlocks.blockAccess, x, y, z);
 		float r = (float)(color >> 16 & 255) / 255.0F;

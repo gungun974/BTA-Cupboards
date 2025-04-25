@@ -9,6 +9,8 @@
     "TileEntityTrommelMixin"
   ],
   "client": [
+    "ChunkRendererLegacyMixin",
+    "ChunkRendererMultiDrawMixin",
     "EntityRendererMinecartMixin"
   ],
   "injectors": {
