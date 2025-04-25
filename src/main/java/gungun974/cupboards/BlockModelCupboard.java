@@ -140,7 +140,26 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		AABB bounds = this.getBlockBoundsForItemRender();
 		GL11.glTranslatef(-0.5F, 0.0F - yOffset, -0.5F);
 
+
+		Direction dir = BlockLogicCupboard.getDirectionFromMeta(metadata);
+		renderBlocks.uvRotateEast = 2;
+		renderBlocks.uvRotateWest = 1;
+		renderBlocks.uvRotateSouth = 2;
+		renderBlocks.uvRotateNorth = 1;
+		switch (dir) {
+			case NORTH:
+				renderBlocks.uvRotateTop = 3;
+				break;
+			case EAST:
+				renderBlocks.uvRotateTop = 2;
+				break;
+			case WEST:
+				renderBlocks.uvRotateTop = 1;
+		}
+
 		this.renderBlockWithBounds(tessellator, bounds, metadata, brightness, 1.0F, lightmapCoordinate);
+
+		this.resetRenderBlocks();
 
 
 		if (LightmapHelper.isLightmapEnabled() && lightmapCoordinate != null) {
@@ -150,9 +169,25 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
+		IconCoordinate tex = cupboardSingle;
+
+		BlockLogicCupboard.Type type = BlockLogicCupboard.getTypeFromMeta(metadata);
+
+		switch (type) {
+			case SINGLE:
+				tex = cupboardSingle;
+				break;
+			case DOWN:
+				tex = cupboardBottom;
+				break;
+			case UP:
+				tex = cupboardTop;
+				break;
+		}
+
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		this.renderSouthFace(tessellator, bounds, (double)0.0F, (double)0.0F, (double)0.0F, cupboardSingle);
+		this.renderSouthFace(tessellator, bounds, (double)0.0F, (double)0.0F, (double)0.0F, tex);
 		tessellator.draw();
 
 		GL11.glTranslatef(0.5F, yOffset, 0.5F);
@@ -223,7 +258,24 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		}
 	}
 
-	public IconCoordinate getBlockTextureFromSideAndMetadata(Side side, int data) {
-		return this.chestTop;
+	public IconCoordinate getBlockTextureFromSideAndMetadata(Side side, int meta) {
+		BlockLogicCupboard.Type type = BlockLogicCupboard.getTypeFromMeta(meta);
+		if (side == Side.TOP) {
+			return this.chestTop;
+		} else if (side == Side.BOTTOM) {
+			return this.chestTop;
+		} else if (type == BlockLogicCupboard.Type.SINGLE) {
+			return this.chestTop;
+		} else {
+			if (type == BlockLogicCupboard.Type.UP) {
+				return this.chestTopLeft;
+			}
+
+			if (type == BlockLogicCupboard.Type.DOWN) {
+				return this.chestTopRight;
+			}
+
+			return this.chestTop;
+		}
 	}
 }

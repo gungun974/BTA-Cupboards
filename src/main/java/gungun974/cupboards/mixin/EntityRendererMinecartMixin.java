@@ -1,5 +1,6 @@
 package gungun974.cupboards.mixin;
 
+import gungun974.cupboards.BlockLogicCupboard;
 import gungun974.cupboards.CupboardsBlocks;
 import net.minecraft.client.render.LightmapHelper;
 import net.minecraft.client.render.block.model.BlockModel;
@@ -9,6 +10,7 @@ import net.minecraft.client.render.tessellator.Tessellator;
 import net.minecraft.core.Global;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.vehicle.EntityMinecart;
+import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -36,7 +38,9 @@ public class EntityRendererMinecartMixin {
 				block = CupboardsBlocks.CUPBOARD;
 			}
 
-			((BlockModel) BlockModelDispatcher.getInstance().getDispatch(block)).renderBlockOnInventory(tessellator, minecart.getMeta(), brightness, (Integer) null);
+			((BlockModel) BlockModelDispatcher.getInstance().getDispatch(block)).renderBlockOnInventory(tessellator, BlockLogicCupboard.getMetaWithType(minecart.getMeta(), BlockLogicCupboard.Type.DOWN), brightness, (Integer) null);
+			GL11.glTranslatef(0.0F, 1F, 0.0F);
+			((BlockModel) BlockModelDispatcher.getInstance().getDispatch(block)).renderBlockOnInventory(tessellator, BlockLogicCupboard.getMetaWithType(minecart.getMeta(), BlockLogicCupboard.Type.UP), brightness, (Integer) null);
 		}
 	}
 

@@ -51,9 +51,26 @@ public class BlockModelCupboardPainted<T extends BlockLogic> extends BlockModelC
 		}
 	}
 
-	public IconCoordinate getBlockTextureFromSideAndMetadata(Side side, int data) {
-		int color = data >> 4;
-		return texCoords[color][TEX_TOP];
+	public IconCoordinate getBlockTextureFromSideAndMetadata(Side side, int meta) {
+		int color = meta >> 4;
+		BlockLogicCupboard.Type type = BlockLogicCupboard.getTypeFromMeta(meta);
+		if (side == Side.TOP) {
+			return texCoords[color][TEX_TOP];
+		} else if (side == Side.BOTTOM) {
+			return texCoords[color][TEX_TOP];
+		} else if (type == BlockLogicCupboard.Type.SINGLE) {
+			return texCoords[color][TEX_TOP];
+		} else {
+			if (type == BlockLogicCupboard.Type.UP) {
+				return texCoords[color][TEX_LEFT_TOP];
+			}
+
+			if (type == BlockLogicCupboard.Type.DOWN) {
+				return texCoords[color][TEX_RIGHT_TOP];
+			}
+
+			return texCoords[color][TEX_TOP];
+		}
 	}
 
 	static {
