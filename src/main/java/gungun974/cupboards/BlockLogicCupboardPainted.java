@@ -50,6 +50,7 @@ public class BlockLogicCupboardPainted extends BlockLogicCupboard implements IPa
     }
 
     public void setColor(World world, int x, int y, int z, DyeColor color) {
-        super.setColor(world, x, y, z, color);
+		int meta = stripColorFromMetadata(world.getBlockMetadata(x, y, z)) + toMetadata(color);
+		world.setBlockAndMetadataWithNotify(x, y, z, CupboardsBlocks.CUPBOARD_PAINTED.id(), meta);
     }
 }
