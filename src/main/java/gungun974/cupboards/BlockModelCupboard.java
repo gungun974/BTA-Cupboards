@@ -50,11 +50,10 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		this.cupboardSingle = TextureRegistry.getTexture("cupboards:block/cupboard_single");
 		this.cupboardTop = TextureRegistry.getTexture("cupboards:block/cupboard_top");
 		this.cupboardBottom = TextureRegistry.getTexture("cupboards:block/cupboard_bottom");
-
-		renderLayer = 1;
 	}
 
 	public boolean render(Tessellator tessellator, int x, int y, int z) {
+		GL11.glEnable(GL11.GL_BLEND);
 
 		int meta = renderBlocks.blockAccess.getBlockMetadata(x, y, z);
 		Side facing = BlockLogicCupboard.getDirectionFromMeta(meta).getSide();
