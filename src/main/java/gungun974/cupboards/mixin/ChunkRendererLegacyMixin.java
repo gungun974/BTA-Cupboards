@@ -23,7 +23,7 @@ public class ChunkRendererLegacyMixin {
 	void extraCupboardRendering(
 		CallbackInfo ci,
 		@Local(name = "model") BlockModel<?> model,
-		@Local(name = "blockRenderPass", ordinal = 0) LocalIntRef renderPass,
+		@Local(name = "blockRenderPass", ordinal = 1) LocalIntRef renderPass,
 		@Local(name = "renderPass") int currentRenderPass
 	) {
 		if (model instanceof BlockModelCupboard) {
@@ -35,8 +35,7 @@ public class ChunkRendererLegacyMixin {
 	@Inject(method = "rebuild",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/render/terrain/ChunkRendererLegacy;renderBlock(Lnet/minecraft/client/render/tessellator/Tessellator;Lnet/minecraft/client/render/RenderBlocks;Lnet/minecraft/client/render/block/model/BlockModel;III)Z",
-			shift = At.Shift.AFTER
+			target = "Lnet/minecraft/client/render/terrain/ChunkRendererLegacy;renderBlock(Lnet/minecraft/client/render/tessellator/Tessellator;Lnet/minecraft/client/render/RenderBlocks;Lnet/minecraft/client/render/block/model/BlockModel;III)Z"
 		)
 	)
 	void extraCupboardRendering2(

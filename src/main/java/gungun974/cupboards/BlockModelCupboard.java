@@ -50,6 +50,17 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 		this.cupboardSingle = TextureRegistry.getTexture("cupboards:block/cupboard_single");
 		this.cupboardTop = TextureRegistry.getTexture("cupboards:block/cupboard_top");
 		this.cupboardBottom = TextureRegistry.getTexture("cupboards:block/cupboard_bottom");
+
+		this.renderLayer = 0;
+	}
+
+	@Override
+	public boolean renderNoCulling(Tessellator tessellator, int x, int y, int z) {
+		int original = this.renderLayer;
+		this.renderLayer = 3;
+		boolean result = super.renderNoCulling(tessellator, x, y, z);
+		this.renderLayer = original;
+		return result;
 	}
 
 	public boolean render(Tessellator tessellator, int x, int y, int z) {
@@ -60,7 +71,7 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 
 		AABB bounds = this.block.getBlockBoundsFromState(renderBlocks.blockAccess, x, y, z);
 
-		if (renderLayer == 0) {
+		if (renderLayer != 1) {
 			renderBlocks.uvRotateEast = 2;
 			renderBlocks.uvRotateWest = 1;
 			renderBlocks.uvRotateSouth = 2;
@@ -82,10 +93,12 @@ public class BlockModelCupboard<T extends BlockLogic> extends BlockModelStandard
 			this.renderStandardBlock(tessellator, bounds, x, y, z);
 			this.resetRenderBlocks();
 
-			return true;
+			if (renderLayer == 0){
+				return true;
+			}
+		} else {
+			this.renderStandardBlock(tessellator, AABB.getTemporaryBB(0, 0, 0, 0, 0, 0), x, y, z);
 		}
-
-		this.renderStandardBlock(tessellator, AABB.getTemporaryBB(0, 0, 0, 0, 0, 0), x, y, z);
 
 		renderBlocks.flipTexture = mirrored;
 
