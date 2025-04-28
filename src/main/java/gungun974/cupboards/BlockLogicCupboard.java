@@ -388,7 +388,8 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 	public void setColor(World world, int x, int y, int z, DyeColor color) {
 		int meta = world.getBlockMetadata(x, y, z);
 		world.setBlockAndMetadataRaw(x, y, z, CupboardsBlocks.CUPBOARD_PAINTED.id(), meta);
-		CupboardsBlocks.CUPBOARD_PAINTED.getLogic().setColor(world, x, y, z, color);
+		world.setBlockMetadata(x, y, z, meta);
+		(CupboardsBlocks.CUPBOARD_PAINTED.getLogic()).setColor(world, x, y, z, color);
 	}
 
 	public static enum Type {
