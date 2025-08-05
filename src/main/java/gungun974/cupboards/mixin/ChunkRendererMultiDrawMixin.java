@@ -27,7 +27,6 @@ public class ChunkRendererMultiDrawMixin {
 		@Local(name = "renderPass") int currentRenderPass
 	) {
 		if (model instanceof BlockModelCupboard) {
-			renderPass.set(currentRenderPass);
 			((BlockModelCupboard<?>) model).renderLayer = currentRenderPass;
 		}
 	}
