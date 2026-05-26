@@ -13,7 +13,10 @@ import net.minecraft.core.util.helper.DyeColor;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.WorldSource;
+import net.minecraft.core.world.pos.TilePos;
+import net.minecraft.core.world.pos.TilePosc;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 public class BlockLogicCupboard extends BlockLogic implements IPaintable {
@@ -28,150 +31,166 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		block.withEntity(TileEntityCupboard::new);
 	}
 
-	public void onBlockPlacedByMob(World world, int x, int y, int z, @NotNull Side placeSide, Mob mob, double xPlaced, double yPlaced) {
-		Direction direction = mob.getHorizontalPlacementDirection(placeSide).getOpposite();
+	boolean mirrord = false;
+
+	@Override
+	public void onPlacedByMob(@NotNull World world, @NotNull TilePosc tilePos, @NotNull Side placeSide, @NotNull Mob mob, double xHit, double yHit) {
+		Direction direction = mob.getHorizontalPlacementDirection(placeSide).opposite();
 		Type type = Type.SINGLE;
 		boolean mirrored = false;
 
 		if (direction == Direction.NORTH) {
-			if (isWithDirection(world, x + 1, y, z, direction)) {
+			if (isWithDirection(world, new TilePos(tilePos.x() + 1, tilePos.y(), tilePos.z()), direction)) {
 				mirrored = true;
 			}
 		}
 
 		if (direction == Direction.EAST) {
-			if (isWithDirection(world, x, y, z + 1, direction)) {
+			if (isWithDirection(world, new TilePos(tilePos.x(), tilePos.y(), tilePos.z() + 1), direction)) {
 				mirrored = true;
 			}
 		}
 
 		if (direction == Direction.SOUTH) {
-			if (isWithDirection(world, x - 1, y, z, direction)) {
+			if (isWithDirection(world, new TilePos(tilePos.x() - 1, tilePos.y(), tilePos.z()), direction)) {
 				mirrored = true;
 			}
 		}
 
 		if (direction == Direction.WEST) {
-			if (isWithDirection(world, x, y, z - 1, direction)) {
+			if (isWithDirection(world, new TilePos(tilePos.x(), tilePos.y(), tilePos.z() - 1), direction)) {
 				mirrored = true;
 			}
 		}
 
 		if (mob.isSneaking() && placeSide.isVertical() && (mob.rotationLockHorizontal == null || mob.rotationLockHorizontal == Direction.NONE)) {
-			int placedOnY = y;
+			int placedOnY = tilePos.y();
 			if (placeSide == Side.TOP) {
-				placedOnY = y - 1;
+				placedOnY = tilePos.y() - 1;
 			}
 
 			if (placeSide == Side.BOTTOM) {
-				placedOnY = y + 1;
+				placedOnY = tilePos.y() + 1;
 			}
 
-			if (isSingleChest(world, x, placedOnY, z)) {
-				Direction direction2 = getDirectionFromMeta(world.getBlockMetadata(x, placedOnY, z));
-				boolean mirrored2 = getMirroredFromWorld(world, x, placedOnY, z);
+			TilePosc placedOnPos = new TilePos(tilePos.x(), placedOnY, tilePos.z());
+			if (isSingleChest(world, placedOnPos)) {
+				Direction direction2 = getDirectionFromMeta(world.getBlockData(placedOnPos));
+				boolean mirrored2 = getMirroredFromWorld(world, placedOnPos);
 				if (placeSide == Side.TOP) {
 					type = Type.UP;
-					setType(world, x, placedOnY, z, Type.DOWN);
+					setType(world, placedOnPos, Type.DOWN);
 					direction = direction2;
 					mirrored = mirrored2;
 				}
 
 				if (placeSide == Side.BOTTOM) {
 					type = Type.DOWN;
-					setType(world, x, placedOnY, z, Type.UP);
+					setType(world, placedOnPos, Type.UP);
 					direction = direction2;
 					mirrored = mirrored2;
 				}
 			}
 		} else if (!mob.isSneaking()) {
-			if (isSingleChestWithDirection(world, x, y - 1, z, direction) && !isSingleChestWithDirection(world, x, y + 1, z, direction)) {
+			TilePosc belowPos = new TilePos(tilePos.x(), tilePos.y() - 1, tilePos.z());
+			TilePosc abovePos = new TilePos(tilePos.x(), tilePos.y() + 1, tilePos.z());
+
+			if (isSingleChestWithDirection(world, belowPos, direction) && !isSingleChestWithDirection(world, abovePos, direction)) {
 				type = Type.UP;
-				setType(world, x, y - 1, z, Type.DOWN);
-				mirrored = getMirrored(world, x, y - 1, z);
+				setType(world, belowPos, Type.DOWN);
+				mirrored = getMirrored(world, belowPos);
 			}
 
-			if (isSingleChestWithDirection(world, x, y + 1, z, direction) && !isSingleChestWithDirection(world, x, y - 1, z, direction)) {
+			if (isSingleChestWithDirection(world, abovePos, direction) && !isSingleChestWithDirection(world, belowPos, direction)) {
 				type = Type.DOWN;
-				setType(world, x, y + 1, z, Type.UP);
-				mirrored = getMirrored(world, x, y + 1, z);
+				setType(world, abovePos, Type.UP);
+				mirrored = getMirrored(world, abovePos);
 			}
 		}
 
-		int meta = world.getBlockMetadata(x, y, z);
+		int meta = world.getBlockData(tilePos);
 		meta = getMetaWithDirection(meta, direction);
 		meta = getMetaWithType(meta, type);
-		world.setBlockMetadata(x, y, z, meta);
-		setMirrored(world, x, y, z, mirrored);
+		world.setBlockDataNotify(tilePos, meta);
+		mirrord = mirrored;
 	}
 
-	public void onBlockPlacedOnSide(World world, int x, int y, int z, @NotNull Side side, double xPlaced, double yPlaced) {
-		Direction direction = side.getDirection();
+	public void onPlacedByWorld(World world, TilePosc tilePos) {
+		setMirrored(world, tilePos, mirrord);
+	}
+
+	@Override
+	public void onPlacedOnSide(@NotNull World world, @NotNull TilePosc tilePos, @NotNull Side side, double xHit, double yHit) {
+		Direction direction = side.direction();
 		Type type = Type.SINGLE;
 		boolean mirrored = false;
 
 		if (direction == Direction.NORTH) {
-			if (isWithDirection(world, x + 1, y, z, direction)) {
+			if (isWithDirection(world, new TilePos(tilePos.x() + 1, tilePos.y(), tilePos.z()), direction)) {
 				mirrored = true;
 			}
 		}
 
 		if (direction == Direction.EAST) {
-			if (isWithDirection(world, x, y, z + 1, direction)) {
+			if (isWithDirection(world, new TilePos(tilePos.x(), tilePos.y(), tilePos.z() + 1), direction)) {
 				mirrored = true;
 			}
 		}
 
 		if (direction == Direction.SOUTH) {
-			if (isWithDirection(world, x - 1, y, z, direction)) {
+			if (isWithDirection(world, new TilePos(tilePos.x() - 1, tilePos.y(), tilePos.z()), direction)) {
 				mirrored = true;
 			}
 		}
 
 		if (direction == Direction.WEST) {
-			if (isWithDirection(world, x, y, z - 1, direction)) {
+			if (isWithDirection(world, new TilePos(tilePos.x(), tilePos.y(), tilePos.z() - 1), direction)) {
 				mirrored = true;
 			}
 		}
 
-		if (isSingleChestWithDirection(world, x, y - 1, z, direction) && !isSingleChestWithDirection(world, x, y + 1, z, direction)) {
+		TilePosc belowPos = new TilePos(tilePos.x(), tilePos.y() - 1, tilePos.z());
+		TilePosc abovePos = new TilePos(tilePos.x(), tilePos.y() + 1, tilePos.z());
+
+		if (isSingleChestWithDirection(world, belowPos, direction) && !isSingleChestWithDirection(world, abovePos, direction)) {
 			type = Type.UP;
-			setType(world, x, y - 1, z, Type.DOWN);
-			mirrored = getMirrored(world, x, y - 1, z);
+			setType(world, belowPos, Type.DOWN);
+			mirrored = getMirrored(world, belowPos);
 		}
 
-		if (isSingleChestWithDirection(world, x, y + 1, z, direction) && !isSingleChestWithDirection(world, x, y - 1, z, direction)) {
+		if (isSingleChestWithDirection(world, abovePos, direction) && !isSingleChestWithDirection(world, belowPos, direction)) {
 			type = Type.DOWN;
-			setType(world, x, y + 1, z, Type.UP);
-			mirrored = getMirrored(world, x, y + 1, z);
+			setType(world, abovePos, Type.UP);
+			mirrored = getMirrored(world, abovePos);
 		}
 
-		int meta = world.getBlockMetadata(x, y, z);
+		int meta = world.getBlockData(tilePos);
 		meta = getMetaWithDirection(meta, direction);
 		meta = getMetaWithType(meta, type);
-		world.setBlockMetadata(x, y, z, meta);
-		setMirrored(world, x, y, z, mirrored);
+		world.setBlockDataNotify(tilePos, meta);
+		mirrord = mirrored;
 	}
 
-	public void checkIfOtherHalfExists(World world, int x, int y, int z) {
-		int meta = world.getBlockMetadata(x, y, z);
+	public void checkIfOtherHalfExists(World world, TilePosc tilePos) {
+		int meta = world.getBlockData(tilePos);
 		Type type = getTypeFromMeta(meta);
 		if (type != Type.SINGLE) {
 			Direction direction = getDirectionFromMeta(meta);
-			int otherChestY = y;
+			int otherChestY = tilePos.y();
 
 			if (type == Type.UP) {
-				otherChestY = y - 1;
+				otherChestY = tilePos.y() - 1;
 			}
 
 			if (type == Type.DOWN) {
-				otherChestY = y + 1;
+				otherChestY = tilePos.y() + 1;
 			}
 
 			boolean valid = false;
+			TilePosc otherPos = new TilePos(tilePos.x(), otherChestY, tilePos.z());
 
-			if (isChest(world, x, otherChestY, z)) {
-				int otherMeta = world.getBlockMetadata(x, otherChestY, z);
+			if (isChest(world, otherPos)) {
+				int otherMeta = world.getBlockData(otherPos);
 				if (getDirectionFromMeta(otherMeta) == direction) {
 					Type otherType = getTypeFromMeta(otherMeta);
 					if (type == Type.UP && otherType == Type.DOWN || type == Type.DOWN && otherType == Type.UP) {
@@ -181,19 +200,18 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 			}
 
 			if (!valid) {
-				setType(world, x, y, z, Type.SINGLE);
-				world.markBlocksDirty(x, y, z, x, y, z);
+				setType(world, tilePos, Type.SINGLE);
+				world.markBlockDirty(tilePos);
 			}
 		}
-
 	}
 
-	public static void setDefaultDirection(World world, int x, int y, int z) {
+	public static void setDefaultDirection(World world, TilePosc tilePos) {
 		if (!world.isClientSide) {
-			int bN = world.getBlockId(x, y, z - 1);
-			int bS = world.getBlockId(x, y, z + 1);
-			int bW = world.getBlockId(x - 1, y, z);
-			int bE = world.getBlockId(x + 1, y, z);
+			int bN = world.getBlockType(new TilePos(tilePos.x(), tilePos.y(), tilePos.z() - 1)).id();
+			int bS = world.getBlockType(new TilePos(tilePos.x(), tilePos.y(), tilePos.z() + 1)).id();
+			int bW = world.getBlockType(new TilePos(tilePos.x() - 1, tilePos.y(), tilePos.z())).id();
+			int bE = world.getBlockType(new TilePos(tilePos.x() + 1, tilePos.y(), tilePos.z())).id();
 			Direction direction = Direction.NORTH;
 			if (Blocks.solid[bN] && !Blocks.solid[bS]) {
 				direction = Direction.SOUTH;
@@ -211,102 +229,101 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 				direction = Direction.WEST;
 			}
 
-			world.setBlockMetadataWithNotify(x, y, z, getMetaWithType(getMetaWithDirection(world.getBlockMetadata(x, y, z), direction), Type.SINGLE));
+			world.setBlockDataNotify(tilePos, getMetaWithType(getMetaWithDirection(world.getBlockData(tilePos), direction), Type.SINGLE));
 		}
 	}
 
-	public void onNeighborBlockChange(World world, int x, int y, int z, int blockId) {
-		super.onNeighborBlockChange(world, x, y, z, blockId);
-		this.checkIfOtherHalfExists(world, x, y, z);
+	@Override
+	public void onNeighborChanged(@NotNull World world, @NotNull TilePosc tilePos, @NotNull Block<?> block) {
+		super.onNeighborChanged(world, tilePos, block);
+		this.checkIfOtherHalfExists(world, tilePos);
 	}
 
-	public static boolean isChest(World world, int x, int y, int z) {
-		Block<?> b;
-		return (b = Blocks.blocksList[world.getBlockId(x, y, z)]) != null && b.getLogic() instanceof BlockLogicCupboard;
+	public static boolean isChest(WorldSource world, TilePosc tilePos) {
+		return world.getBlockType(tilePos).getLogic() instanceof BlockLogicCupboard;
 	}
 
-	public static boolean isSingleChest(World world, int x, int y, int z) {
-		return isChest(world, x, y, z) && getTypeFromMeta(world.getBlockMetadata(x, y, z)) == Type.SINGLE;
+	public static boolean isSingleChest(World world, TilePosc tilePos) {
+		return isChest(world, tilePos) && getTypeFromMeta(world.getBlockData(tilePos)) == Type.SINGLE;
 	}
 
-	public static boolean isSingleChestWithDirection(World world, int x, int y, int z, Direction direction) {
-		int meta = world.getBlockMetadata(x, y, z);
-		return isChest(world, x, y, z) && getTypeFromMeta(meta) == Type.SINGLE && getDirectionFromMeta(meta) == direction;
+	public static boolean isSingleChestWithDirection(World world, TilePosc tilePos, Direction direction) {
+		int meta = world.getBlockData(tilePos);
+		return isChest(world, tilePos) && getTypeFromMeta(meta) == Type.SINGLE && getDirectionFromMeta(meta) == direction;
 	}
 
-	public static boolean isWithDirection(World world, int x, int y, int z, Direction direction) {
-		int meta = world.getBlockMetadata(x, y, z);
-		return isChest(world, x, y, z) && getDirectionFromMeta(meta) == direction;
+	public static boolean isWithDirection(World world, TilePosc tilePos, Direction direction) {
+		int meta = world.getBlockData(tilePos);
+		return isChest(world, tilePos) && getDirectionFromMeta(meta) == direction;
 	}
 
-	public void setDirection(World world, int x, int y, int z, Direction direction) {
-		if (isChest(world, x, y, z)) {
-			world.setBlockMetadataWithNotify(x, y, z, getMetaWithDirection(world.getBlockMetadata(x, y, z), direction));
+	public void setDirection(World world, TilePosc tilePos, Direction direction) {
+		if (isChest(world, tilePos)) {
+			world.setBlockDataNotify(tilePos, getMetaWithDirection(world.getBlockData(tilePos), direction));
 		}
-
 	}
 
-	public static void setType(World world, int x, int y, int z, Type type) {
-		if (isChest(world, x, y, z)) {
-			world.setBlockMetadataWithNotify(x, y, z, getMetaWithType(world.getBlockMetadata(x, y, z), type));
+	public static void setType(World world, TilePosc tilePos, Type type) {
+		if (isChest(world, tilePos)) {
+			world.setBlockDataNotify(tilePos, getMetaWithType(world.getBlockData(tilePos), type));
 		}
-
 	}
 
-	public static void setMirrored(World world, int x, int y, int z, boolean mirrored) {
-		if (isChest(world, x, y, z)) {
-			setMirroredToWorld(world, x, y, z, mirrored);
-			world.markBlockNeedsUpdate(x, y, z);
+	public static void setMirrored(World world, TilePosc tilePos, boolean mirrored) {
+		if (isChest(world, tilePos)) {
+			setMirroredToWorld(world, tilePos, mirrored);
+			world.markBlockNeedsUpdate(tilePos);
 		}
-
 	}
 
-	public static Direction getDirection(World world, int x, int y, int z) {
-		return isChest(world, x, y, z) ? getDirectionFromMeta(world.getBlockMetadata(x, y, z)) : null;
+	public static Direction getDirection(World world, TilePosc tilePos) {
+		return isChest(world, tilePos) ? getDirectionFromMeta(world.getBlockData(tilePos)) : null;
 	}
 
-	public static boolean getMirrored(World world, int x, int y, int z) {
-		return isChest(world, x, y, z) && getMirroredFromWorld(world, x, y, z);
+	public static boolean getMirrored(WorldSource world, TilePosc tilePos) {
+		return isChest(world, tilePos) && getMirroredFromWorld(world, tilePos);
 	}
 
-	public boolean onBlockRightClicked(World world, int x, int y, int z, Player player, Side side, double xPlaced, double yPlaced) {
+	@Override
+	public boolean onInteracted(@NotNull World world, @NotNull TilePosc tilePos, @NotNull Player player, @Nullable Side side, double xHit, double yHit) {
 		if (world.isClientSide) {
 			return true;
 		} else {
-			this.checkIfOtherHalfExists(world, x, y, z);
-			player.displayContainerScreen(getInventory(world, x, y, z));
+			this.checkIfOtherHalfExists(world, tilePos);
+			player.displayContainerScreen(getInventory(world, tilePos));
 			return true;
 		}
 	}
 
-	public static Container getInventory(World world, int x, int y, int z) {
-		Container inventory = (Container) world.getTileEntity(x, y, z);
-		int meta = world.getBlockMetadata(x, y, z);
+	public static Container getInventory(World world, TilePosc tilePos) {
+		Container inventory = (Container) world.getTileEntity(tilePos);
+		int meta = world.getBlockData(tilePos);
 		Type type = getTypeFromMeta(meta);
 		if (type != Type.SINGLE) {
 			Container inv2 = null;
 			Direction direction = getDirectionFromMeta(meta);
-			int otherChestY = y;
+			int otherChestY = tilePos.y();
 
 			if (type == Type.UP) {
-				otherChestY = y - 1;
+				otherChestY = tilePos.y() - 1;
 			}
 
 			if (type == Type.DOWN) {
-				otherChestY = y + 1;
+				otherChestY = tilePos.y() + 1;
 			}
 
-			if (isChest(world, x, otherChestY, z)) {
-				int otherMeta = world.getBlockMetadata(x, otherChestY, z);
+			TilePosc otherPos = new TilePos(tilePos.x(), otherChestY, tilePos.z());
+			if (isChest(world, otherPos)) {
+				int otherMeta = world.getBlockData(otherPos);
 				if (getDirectionFromMeta(otherMeta) == direction) {
 					Type otherType = getTypeFromMeta(otherMeta);
 					if (type == Type.UP && otherType == Type.DOWN) {
-						inv2 = (Container) world.getTileEntity(x, otherChestY, z);
+						inv2 = (Container) world.getTileEntity(otherPos);
 					}
 
 					if (type == Type.DOWN && otherType == Type.UP) {
 						inv2 = inventory;
-						inventory = (Container) world.getTileEntity(x, otherChestY, z);
+						inventory = (Container) world.getTileEntity(otherPos);
 					}
 				}
 			}
@@ -339,13 +356,13 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 		}
 	}
 
-	public static void setMirroredToWorld(World world, int x, int y, int z, boolean mirrored) {
+	public static void setMirroredToWorld(World world, TilePosc tilePos, boolean mirrored) {
 		if (world == null) {
 			return;
 		}
 
-		TileEntity tile = world.getTileEntity(x, y, z);
-		if (!(tile instanceof TileEntityCupboard)){
+		TileEntity tile = world.getTileEntity(tilePos);
+		if (!(tile instanceof TileEntityCupboard)) {
 			return;
 		}
 
@@ -354,42 +371,38 @@ public class BlockLogicCupboard extends BlockLogic implements IPaintable {
 
 	public static Direction getDirectionFromMeta(int meta) {
 		meta &= 0b11;
-		switch (meta) {
-			case 0:
-				return Direction.NORTH;
-			case 1:
-				return Direction.EAST;
-			case 2:
-				return Direction.SOUTH;
-			case 3:
-				return Direction.WEST;
-			default:
-				return Direction.NONE;
-		}
+		return switch (meta) {
+			case 0 -> Direction.WEST;
+			case 1 -> Direction.EAST;
+			case 2 -> Direction.NORTH;
+			case 3 -> Direction.SOUTH;
+			default -> Direction.NONE;
+		};
 	}
 
 	public static Type getTypeFromMeta(int meta) {
 		return Type.get((meta >> 2) & 0b11);
 	}
 
-	public static boolean getMirroredFromWorld(WorldSource world, int x, int y, int z) {
+	public static boolean getMirroredFromWorld(WorldSource world, TilePosc tilePos) {
 		if (world == null) {
 			return false;
 		}
 
-		TileEntity tile = world.getTileEntity(x, y, z);
-		if (!(tile instanceof TileEntityCupboard)){
+		TileEntity tile = world.getTileEntity(tilePos);
+		if (!(tile instanceof TileEntityCupboard)) {
 			return false;
 		}
 
 		return ((TileEntityCupboard) tile).shouldRenderMirrored;
 	}
 
-	public void setColor(World world, int x, int y, int z, DyeColor color) {
-		int meta = world.getBlockMetadata(x, y, z);
-		world.setBlockAndMetadataRaw(x, y, z, CupboardsBlocks.CUPBOARD_PAINTED.id(), meta);
-		world.setBlockMetadata(x, y, z, meta);
-		(CupboardsBlocks.CUPBOARD_PAINTED.getLogic()).setColor(world, x, y, z, color);
+	@Override
+	public void setColor(World world, TilePosc tilePos, DyeColor color) {
+		int meta = world.getBlockData(tilePos);
+		world.setBlockTypeDataRaw(tilePos, CupboardsBlocks.CUPBOARD_PAINTED, meta);
+		world.setBlockData(tilePos, meta);
+		((IPaintable) CupboardsBlocks.CUPBOARD_PAINTED.getLogic()).setColor(world, tilePos, color);
 	}
 
 	public static enum Type {

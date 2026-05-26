@@ -38,7 +38,7 @@
 		"cupboards.mixins.json"
 	],
 	"depends": {
-		"minecraft": "~7.3",
+		"minecraft": "*",
 		"fabricloader": ">=0.15.5",
 		"halplibe": ">=5.2.0"
 	},

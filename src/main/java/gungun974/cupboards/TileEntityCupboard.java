@@ -14,10 +14,14 @@ import net.minecraft.core.net.packet.PacketTileEntityData;
 import net.minecraft.core.player.inventory.InventorySorter;
 import net.minecraft.core.player.inventory.container.Container;
 import net.minecraft.core.util.helper.Direction;
+import net.minecraft.core.world.ICarriable;
+import net.minecraft.core.world.ICarrySource;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.pos.TilePosc;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TileEntityCupboard extends TileEntity implements Container {
+public class TileEntityCupboard extends TileEntity implements Container, ICarrySource {
     private ItemStack[] chestContents = new ItemStack[36];
 
 	public boolean shouldRenderMirrored = false;
@@ -67,8 +71,7 @@ public class TileEntityCupboard extends TileEntity implements Container {
         return "container.cupboard.name";
     }
 
-    public void readFromNBT(CompoundTag nbttagcompound) {
-        super.readFromNBT(nbttagcompound);
+    public void readAdditionalData(CompoundTag nbttagcompound) {
         ListTag nbttaglist = nbttagcompound.getList("Items");
         this.chestContents = new ItemStack[this.getContainerSize()];
 
@@ -83,8 +86,7 @@ public class TileEntityCupboard extends TileEntity implements Container {
 		this.shouldRenderMirrored = nbttagcompound.getBoolean("Mirrored");
     }
 
-    public void writeToNBT(CompoundTag nbttagcompound) {
-        super.writeToNBT(nbttagcompound);
+    public void writeAdditionalData(CompoundTag nbttagcompound) {
         ListTag nbttaglist = new ListTag();
 
         for(int i = 0; i < this.chestContents.length; ++i) {
@@ -111,14 +113,14 @@ public class TileEntityCupboard extends TileEntity implements Container {
     }
 
     public boolean stillValid(Player entityplayer) {
-        if (this.worldObj != null && this.worldObj.getTileEntity(this.x, this.y, this.z) == this) {
-            return entityplayer.distanceToSqr((double)this.x + (double)0.5F, (double)this.y + (double)0.5F, (double)this.z + (double)0.5F) <= (double)64.0F;
+        if (this.worldObj != null && this.worldObj.getTileEntity(tilePos) == this) {
+            return entityplayer.distanceToSqr((double)this.tilePos.x + (double)0.5F, (double)this.tilePos.y + (double)0.5F, (double)this.tilePos.z + (double)0.5F) <= (double)64.0F;
         } else {
             return false;
         }
     }
 
-    public void sortContainer() {
+    public void sort() {
         InventorySorter.sortInventory(this.chestContents);
     }
 
@@ -138,9 +140,9 @@ public class TileEntityCupboard extends TileEntity implements Container {
 
     }
 
-    public boolean canBeCarried(World world, Entity potentialHolder) {
-        return true;
-    }
+	public @NotNull ICarriable pickup(@NotNull World world, @NotNull Entity holder, @NotNull TilePosc tilePos) {
+		return super.pickup(world, holder, tilePos);
+	}
 
     public CarriedBlock getCarriedEntry(World world, Entity holder, Block<?> currentBlock, int currentMeta) {
         return super.getCarriedEntry(world, holder, currentBlock, BlockLogicCupboard.getMetaWithDirection(BlockLogicCupboard.getMetaWithType(currentMeta, BlockLogicCupboard.Type.SINGLE), Direction.NORTH));

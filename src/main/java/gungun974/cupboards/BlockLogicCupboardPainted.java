@@ -10,6 +10,8 @@ import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.util.helper.DyeColor;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.pos.TilePosc;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockLogicCupboardPainted extends BlockLogicCupboard implements IPainted {
@@ -20,11 +22,13 @@ public class BlockLogicCupboardPainted extends BlockLogicCupboard implements IPa
         super(block, material);
     }
 
-    public int getPlacedBlockMetadata(@Nullable Player player, ItemStack stack, World world, int x, int y, int z, Side side, double xPlaced, double yPlaced) {
-        return stack.getMetadata();
+    @Override
+    public int getPlacedData(@Nullable Player player, @NotNull ItemStack itemStack, @NotNull World world, @NotNull TilePosc tilePos, @NotNull Side side, double xHit, double yHit) {
+        return itemStack.getMetadata();
     }
 
-    public ItemStack[] getBreakResult(World world, EnumDropCause dropCause, int meta, TileEntity tileEntity) {
+    @Override
+    public @NotNull ItemStack @Nullable [] getBreakResult(@NotNull World world, @NotNull EnumDropCause dropCause, int meta, @Nullable TileEntity tileEntity) {
         return new ItemStack[]{new ItemStack(this.block, 1, meta & 240)};
     }
 
@@ -44,12 +48,13 @@ public class BlockLogicCupboardPainted extends BlockLogicCupboard implements IPa
         return meta & -241;
     }
 
-    public void removeDye(World world, int x, int y, int z) {
-        int meta = this.stripColorFromMetadata(world.getBlockMetadata(x, y, z));
-        world.setBlockAndMetadataWithNotify(x, y, z, CupboardsBlocks.CUPBOARD.id(), meta);
+    public void removeDye(@NotNull World world, @NotNull TilePosc tilePos) {
+        int meta = this.stripColorFromMetadata(world.getBlockData(tilePos));
+        world.setBlockTypeDataNotify(tilePos, CupboardsBlocks.CUPBOARD, meta);
     }
 
-	public void setColor(World world, int x, int y, int z, DyeColor color) {
-		IPainted.super.setColor(world, x, y, z, color);
-	}
+    @Override
+    public void setColor(@NotNull World world, @NotNull TilePosc tilePos, @NotNull DyeColor color) {
+        IPainted.super.setColor(world, tilePos, color);
+    }
 }

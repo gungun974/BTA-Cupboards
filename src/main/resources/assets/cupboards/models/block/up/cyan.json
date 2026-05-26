@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "up": "minecraft:block/chest/planks_cyan/top",
+    "down": "minecraft:block/chest/planks_cyan/top",
+    "south": "minecraft:block/chest/planks_cyan/top_left",
+    "north": "minecraft:block/chest/planks_cyan/top_left",
+    "west": "minecraft:block/chest/planks_cyan/top_left",
+    "east": "minecraft:block/chest/planks_cyan/top_left"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#up" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#down" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#south", "rotation": 90 },
+        "north": { "uv": [0, 0, 16, 16], "texture": "#north", "rotation": 90 },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#west",  "rotation": 90 },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#east",  "rotation": 90 }
+      }
+    }
+  ]
+}

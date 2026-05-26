@@ -5,12 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "EntityMinecartMixin",
-    "MenuInventoryCreativeMixin",
     "TileEntityTrommelMixin"
   ],
   "client": [
-    "ChunkRendererLegacyMixin",
-    "ChunkRendererMultiDrawMixin",
     "EntityRendererMinecartMixin"
   ],
   "injectors": {

@@ -1,6 +1,6 @@
 package gungun974.cupboards;
 
-import net.minecraft.client.render.EntityRenderDispatcher;
+import net.minecraft.client.render.EntityRendererDispatcher;
 import net.minecraft.client.render.TileEntityRenderDispatcher;
 import net.minecraft.client.render.block.color.BlockColorDispatcher;
 import net.minecraft.client.render.block.model.BlockModelDispatcher;
@@ -12,13 +12,10 @@ public class CupboardsModels implements ModelEntrypoint {
 
 	@Override
 	public void initBlockModels(BlockModelDispatcher dispatcher) {
-		ModelHelper.setBlockModel(CupboardsBlocks.CUPBOARD, () -> new BlockModelCupboard<>(CupboardsBlocks.CUPBOARD, "minecraft:block/chest/planks/")
-			.setAllTextures(0, "minecraft:block/chest/planks/top")
+		ModelHelper.setBlockModel(CupboardsBlocks.CUPBOARD, () -> new BlockModelCupboard<>(CupboardsBlocks.CUPBOARD )
 		);
 
-		ModelHelper.setBlockModel(CupboardsBlocks.CUPBOARD_PAINTED, () -> new BlockModelCupboardPainted<>(CupboardsBlocks.CUPBOARD_PAINTED)
-			.setAllTextures(0, "minecraft:block/chest/planks/top")
-		);
+		ModelHelper.setBlockModel(CupboardsBlocks.CUPBOARD_PAINTED, () -> new BlockModelCupboardPainted<>(CupboardsBlocks.CUPBOARD_PAINTED));
 
 		CupboardsMod.LOGGER.info("Block Models initialized.");
 	}
@@ -29,11 +26,13 @@ public class CupboardsModels implements ModelEntrypoint {
 	}
 
 	@Override
-	public void initEntityModels(EntityRenderDispatcher dispatcher) {
+	public void initEntityModels(EntityRendererDispatcher dispatcher) {
+
 	}
 
 	@Override
 	public void initTileEntityModels(TileEntityRenderDispatcher dispatcher) {
+		dispatcher.assignRenderer(TileEntityCupboard.class, new TileEntityRendererCupboard());
 	}
 
 	@Override

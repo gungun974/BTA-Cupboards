@@ -1,36 +1,72 @@
 package gungun974.cupboards.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import gungun974.cupboards.BlockLogicCupboard;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.Blocks;
 import net.minecraft.core.block.entity.TileEntity;
 import net.minecraft.core.block.entity.TileEntityTrommel;
+import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.container.Container;
+import net.minecraft.core.world.pos.TilePos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = TileEntityTrommel.class, remap = false)
-public class TileEntityTrommelMixin extends TileEntity {
+public abstract class TileEntityTrommelMixin extends TileEntity {
+
 	@Inject(
 		method = "sieveItem",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/core/block/Block;hasLogicClass(Lnet/minecraft/core/block/Block;Ljava/lang/Class;)Z")
+		cancellable = true,
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/core/block/Block;hasLogicClass(Lnet/minecraft/core/block/Block;Ljava/lang/Class;)Z"
+		)
 	)
-	void addSupportForCupboard(int slotIndex,
-							   CallbackInfo ci,
-							   @Local(name = "adjacentId") int adjacentId,
-							   @Local(name = "xOffset") int xOffset,
-							   @Local(name = "zOffset") int zOffset,
-							   @Local(name = "chest") LocalRef<Container> chest
+	private void addSupportForCupboard(
+		int slotIndex,
+		CallbackInfo ci,
+		@Local(name = "adjacentId") int adjacentId,
+		@Local(name = "queryPos") TilePos queryPos,
+		@Local(name = "itemResult") ItemStack itemResult
 	) {
-		if (Block.hasLogicClass(Blocks.blocksList[adjacentId], BlockLogicCupboard.class)) {
-			assert this.worldObj != null;
+		if (this.worldObj == null) return;
+		if (!Block.hasLogicClass(Blocks.blocksList[adjacentId], BlockLogicCupboard.class)) return;
+		if (itemResult == null) return;
 
-			chest.set(BlockLogicCupboard.getInventory(this.worldObj, this.x + xOffset, this.y, this.z + zOffset));
+		Container chest = BlockLogicCupboard.getInventory(this.worldObj, queryPos);
+		if (chest == null) return;
+
+		for (int i = 0; i < chest.getContainerSize(); ++i) {
+			ItemStack slot = chest.getItem(i);
+			if (slot != null
+				&& slot.itemID == itemResult.itemID
+				&& slot.getMetadata() == itemResult.getMetadata()) {
+				while (slot.stackSize + 1 <= slot.getMaxStackSize()) {
+					++slot.stackSize;
+					chest.setItem(i, slot);
+					--itemResult.stackSize;
+					if (itemResult.stackSize <= 0) {
+						ci.cancel();
+						return;
+					}
+				}
+			}
 		}
 
+		if (itemResult.stackSize <= 0) {
+			ci.cancel();
+			return;
+		}
+
+		for (int i = 0; i < chest.getContainerSize(); ++i) {
+			if (chest.getItem(i) == null) {
+				chest.setItem(i, itemResult);
+				ci.cancel();
+				return;
+			}
+		}
 	}
 }
