@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.useless.dragonfly.models.block.StaticBlockModel;
 
 @Environment(EnvType.CLIENT)
-public class TileEntityRendererCupboard extends TileEntityRenderer {
+public class TileEntityRendererCupboard<T extends TileEntity> extends TileEntityRenderer<T> {
 
 	@Override
 	public void doRender(@NotNull TessellatorGeneral tessellator, @NotNull TileEntity tileEntityRaw, double x, double y, double z, float partialTick) {

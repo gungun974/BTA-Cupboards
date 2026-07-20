@@ -19,19 +19,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"gungun974.cupboards.CupboardsMod"
+			"gungun974.cupboards.Cupboards"
 		],
-		"initModels": [
-			"gungun974.cupboards.CupboardsModels"
-		],
-		"beforeGameStart": [
-			"gungun974.cupboards.CupboardsMod"
-		],
-		"afterGameStart": [
-			"gungun974.cupboards.CupboardsMod"
-		],
-		"recipesReady": [
-			"gungun974.cupboards.CupboardsRecipe"
+		"client": [
+			"gungun974.cupboards.CupboardsClient"
 		]
 	},
 	"mixins": [

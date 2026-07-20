@@ -8,27 +8,24 @@ import net.minecraft.core.data.registry.recipe.RecipeSymbol;
 import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.util.helper.DyeColor;
-import turniplabs.halplibe.util.RecipeEntrypoint;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CupboardsRecipe implements RecipeEntrypoint {
+public class CupboardsRecipe {
 
 	public static CupboardsRecipeNamespace CUPBOARDS = new CupboardsRecipeNamespace();
 	public static RecipeGroup<RecipeEntryCrafting<?, ?>> WORKBENCH;
 
-	@Override
 	public void onRecipesReady() {
-		CupboardsMod.LOGGER.info("Loading Cupboards recipes...");
+		Cupboards.LOGGER.info("Loading Cupboards recipes...");
 		resetGroups();
 		registerNamespaces();
 		load();
 	}
 
-	@Override
 	public void initNamespaces() {
-		CupboardsMod.LOGGER.info("Loading Cupboards recipe namespaces...");
+		Cupboards.LOGGER.info("Loading Cupboards recipe namespaces...");
 		resetGroups();
 
 		List<ItemStack> cupboardStackList = new ArrayList<>();
@@ -57,6 +54,6 @@ public class CupboardsRecipe implements RecipeEntrypoint {
 	public void load() {
 		DataLoader.loadRecipesFromFile("/assets/cupboards/recipes/workbench.json");
 
-		CupboardsMod.LOGGER.info("{} recipes in {} groups.", CUPBOARDS.getAllRecipes().size(), CUPBOARDS.size());
+		Cupboards.LOGGER.info("{} recipes in {} groups.", CUPBOARDS.getAllRecipes().size(), CUPBOARDS.size());
 	}
 }

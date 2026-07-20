@@ -1,27 +1,21 @@
 package gungun974.cupboards;
 
 import net.minecraft.core.block.Block;
-import net.minecraft.core.block.Blocks;
 import net.minecraft.core.block.entity.TileEntityDispatcher;
-import net.minecraft.core.block.material.Material;
 import net.minecraft.core.block.material.Materials;
 import net.minecraft.core.block.tag.BlockTags;
 import net.minecraft.core.item.ItemStack;
-import net.minecraft.core.item.Items;
 import net.minecraft.core.item.block.ItemBlockPainted;
 import net.minecraft.core.sound.BlockSounds;
 import net.minecraft.core.util.collection.NamespaceID;
-import net.minecraft.core.util.helper.DyeColor;
 import turniplabs.halplibe.helper.BlockBuilder;
-import turniplabs.halplibe.helper.EntityHelper;
 import turniplabs.halplibe.helper.creativeInventory.CreativeInventoryCategory;
 import turniplabs.halplibe.helper.creativeInventory.CreativeInventoryPlacement;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static gungun974.cupboards.CupboardsMod.MOD_ID;
+import static gungun974.cupboards.Cupboards.MOD_ID;
 
 public class CupboardsBlocks {
 	public static Block<BlockLogicCupboard> CUPBOARD;
@@ -34,7 +28,7 @@ public class CupboardsBlocks {
 	}
 
 	public static void RegisterBlocks() {
-		currentGeneratedId = CupboardsMod.startBlockID;
+		currentGeneratedId = Cupboards.startBlockID;
 
 		TileEntityDispatcher.addMapping(TileEntityCupboard.class, new NamespaceID(MOD_ID, "cupboard"));
 
