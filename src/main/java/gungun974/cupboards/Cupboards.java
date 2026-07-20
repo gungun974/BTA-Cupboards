@@ -20,7 +20,7 @@ public class Cupboards implements ModInitializer {
 
 
 		LOGGER.info("Binding to events...");
-		CommonEvents.RECIPES_READY.listen(Key.of(MOD_ID), () -> new CupboardsRecipe().initNamespaces());
+		CommonEvents.RECIPES_NAMESPACE_INIT.listen(Key.of(MOD_ID), () -> new CupboardsRecipe().initNamespaces());
 		CommonEvents.RECIPES_READY.listen(Key.of(MOD_ID), () -> new CupboardsRecipe().onRecipesReady());
 	}
 }
