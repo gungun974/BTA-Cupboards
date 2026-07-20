@@ -14,5 +14,5 @@ Idea and textures by Zainnhy
 Requirements:
 
 - BTA (https://www.betterthanadventure.net)
-- Babric for BTA https://github.com/Turnip-Labs/babric-instance-repo/releases/tag/v7.3_01
+- Babric for BTA https://github.com/Turnip-Labs/babric-instance-repo/releases/tag/v8.0
 - HalpLibe (https://github.com/Turnip-Labs/bta-halplibe)
