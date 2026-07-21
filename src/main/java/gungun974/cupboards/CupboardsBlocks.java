@@ -38,6 +38,7 @@ public class CupboardsBlocks {
 			.setTags(BlockTags.FENCES_CONNECT, BlockTags.MINEABLE_BY_AXE)
 			.setTileEntity(TileEntityCupboard::new)
 			.setBlockSound(BlockSounds.WOOD)
+			.setCreativeInventoryPlacement(new CreativeInventoryPlacement.Category(CreativeInventoryCategory.MISCELLANEOUS))
 			.build("cupboard", generateNexId(), b -> new BlockLogicCupboard(b, Materials.WOOD));
 
 

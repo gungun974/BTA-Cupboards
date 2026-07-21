@@ -30,8 +30,9 @@
 	],
 	"depends": {
 		"minecraft": "*",
-		"fabricloader": ">=0.15.5",
-		"halplibe": ">=5.2.0"
+		"fabricloader": ">=${fabricloader}",
+		"halplibe": ">=${halplibe}",
+		"java": ">=${java}"
 	},
 	"suggests": {
 	}
